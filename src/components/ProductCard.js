@@ -8,13 +8,16 @@ import watch from "../images/watch.jpg";
 import watch2 from "../images/watch2.jpg";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist } from "../features/user/userSlice";
 
 const ProductCard = (props) => {
   const { grid, data } = props;
+  const dispatch = useDispatch();
   let location = useLocation();
-  const addToWishlist = () => {
-    
-  }
+  const addToWish = (id) => {
+    dispatch(addToWishlist(id));
+  };
 
   return (
     <>
@@ -37,7 +40,12 @@ const ProductCard = (props) => {
               className="product-card position-relative"
             >
               <div className="wishlist-icon position-absolute">
-                <button className="border-0 bg-transparent">
+                <button
+                  className="border-0 bg-transparent"
+                  onClick={(e) => {
+                    addToWish(item?._id);
+                  }}
+                >
                   <img src={wish} alt="wishlist" />
                 </button>
               </div>

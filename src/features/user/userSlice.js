@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
     try {
-      return authService.register(userData);
+      return await authService.register(userData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -14,10 +14,32 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  "auth/login`",
+  "auth/login",
   async (userData, thunkAPI) => {
     try {
-      return authService.login(userData);
+      return await authService.login(userData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const addToWishlist = createAsyncThunk(
+  "auth/addtowishlist",
+  async (prodId, thunkAPI) => {
+    try {
+      return authService.addToWishlist(prodId);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getUserProductWishlist = createAsyncThunk(
+  "auth/wishlist",
+  async (thunkAPI) => {
+    try {
+      return await authService.getUserWishlist();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -84,6 +106,37 @@ export const authSlice = createSlice({
         if (state.isError == true) {
           toast.error(action.error);
         }
+      })
+      .addCase(addToWishlist.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addToWishlist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.addToWishlist = action.payload;
+        state.message = "Product added to wishlist";
+      })
+      .addCase(addToWishlist.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(getUserProductWishlist.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserProductWishlist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.wishlist = action.payload;
+      })
+      .addCase(getUserProductWishlist.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
       });
   },
 });
