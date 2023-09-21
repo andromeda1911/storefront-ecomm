@@ -1,68 +1,70 @@
 import { createSlice, AsyncThunk, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { productService } from "./productService";
+import { blogService } from "./blogService";
 
-export const getAllproducts = createAsyncThunk(
-  "product/get",
+
+export const getAllBlogs = createAsyncThunk(
+  "blog/get",
   async (thunkAPI) => {
     try {
-      return productService.getProducts();
+      return blogService.getBlogs();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const getDetails = createAsyncThunk(
-  "product/getdetails",
+export const getblogDetails = createAsyncThunk(
+  "blog/getDetail",
   async (id,thunkAPI) => {
     try {
-      return productService.getProductDetails(id);
+      return blogService.getBlogDetails(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-const productState = {
-  user: "",
+const blogState = {
+  blog: [],
+  singleBlog: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
-export const productSlice = createSlice({
-  name: "product",
-  initialState: productState,
+export const blogSlice = createSlice({
+  name: "blog",
+  initialState: blogState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllproducts.pending, (state) => {
+      .addCase(getAllBlogs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllproducts.fulfilled, (state, action) => {
+      .addCase(getAllBlogs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.product = action.payload;
+        state.blog = action.payload;
       })
-      .addCase(getAllproducts.rejected, (state, action) => {
+      .addCase(getAllBlogs.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getDetails.pending, (state) => {
+      .addCase(getblogDetails.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getDetails.fulfilled, (state, action) => {
+      .addCase(getblogDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.singleproduct = action.payload;
+        state.singleBlog = action.payload;
       })
-      .addCase(getDetails.rejected, (state, action) => {
+      .addCase(getblogDetails.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = true;
         state.isSuccess = false;
@@ -71,4 +73,4 @@ export const productSlice = createSlice({
   },
 });
 
-export default productSlice.reducer;
+export default blogSlice.reducer;

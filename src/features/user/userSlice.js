@@ -46,6 +46,50 @@ export const getUserProductWishlist = createAsyncThunk(
   }
 );
 
+export const addProdToCart = createAsyncThunk(
+  "auth/cart/add",
+  async (data,thunkAPI) => {
+    try {
+      return await authService.addToCart(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getUserCart = createAsyncThunk(
+  "auth/cart/get",
+  async (thunkAPI) => {
+    try {
+      return await authService.getCart();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteCartItem = createAsyncThunk(
+  "auth/cart/delete",
+  async (cartItemId,thunkAPI) => {
+    try {
+      return await authService.removeProductFromCart(cartItemId);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateCartItem = createAsyncThunk(
+  "auth/cart/update",
+  async (cartDetails,thunkAPI) => {
+    try {
+      return await authService.updateProductFromCart(cartDetails);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const getUserfromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -55,7 +99,7 @@ const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: "",
+  message: ""
 };
 
 export const authSlice = createSlice({
@@ -129,15 +173,91 @@ export const authSlice = createSlice({
       .addCase(getUserProductWishlist.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        // state.wishlist = action.payload;
+        state.user = action.payload;
         state.isSuccess = true;
-        state.wishlist = action.payload;
       })
       .addCase(getUserProductWishlist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      });
+      })
+      .addCase(addProdToCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addProdToCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.cartProduct = action.payload;
+        if(state.isSuccess) {
+          toast.success("Product added to cart");
+        }
+      })
+      .addCase(addProdToCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(getUserCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.cartProducts = action.payload;
+      })
+      .addCase(getUserCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(deleteCartItem.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCartItem.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deletedCartItem = action.payload;
+        if(state.isSuccess) {
+          toast.success("Product deleted from cart")
+        }
+      })
+      .addCase(deleteCartItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        if(state.isError) {
+          toast.error("Something went wrong")
+        }
+      })
+      .addCase(updateCartItem.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCartItem.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.updatedCartItem = action.payload;
+        if(state.isSuccess) {
+          toast.success("Product updated")
+        }
+      })
+      .addCase(updateCartItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        if(state.isError) {
+          toast.error("Something went wrong")
+        }
+      })
   },
 });
 

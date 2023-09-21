@@ -30,15 +30,50 @@ const addToWishlist = async (prodId) => {
 
 const getUserWishlist = async() => {
     const response = await axios.get(`${base_url}user/wishlist`, config);
-    if(register.data){
-        console.log('wish----------');
+    if(response.data){
         return response.data;
     }
 }
+
+const addToCart = async(data) => {
+  const response = await axios.post(`${base_url}user/cart`, data, config);
+  if(response.data){
+      return response.data;
+  }
+}
+
+const getCart = async() => {
+  console.log('getcartconfig=======', config);
+  const response = await axios.get(`${base_url}user/cart`, config);
+  if(response.data){
+      return response.data;
+  }
+}
+
+const removeProductFromCart = async(cartItemId) => {
+  const response = await axios.delete(`${base_url}user/delete-product-cart/${cartItemId}`, config);
+  if(response.data){
+      return response.data;
+  } 
+}
+
+const updateProductFromCart = async(cartDetails) => {
+  const response = await axios.put(`${base_url}user/update-product-cart/${cartDetails.cartItemId}/${cartDetails.quantity}`,{}, config);
+  if(response.data){
+      return response.data;
+  } 
+}
+
+
+
 
 export const authService = {
   register,
   login,
   addToWishlist,
-  getUserWishlist
+  getUserWishlist,
+  addToCart,
+  getCart,
+  removeProductFromCart,
+  updateProductFromCart
 };
