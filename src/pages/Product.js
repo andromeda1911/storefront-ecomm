@@ -37,7 +37,7 @@ const Product = () => {
         setAlreadyAdded(true);
       }
     }
-  }, []);
+  }, [cartState]);
 
   const uploadCart = () => {
     if (color === null) {

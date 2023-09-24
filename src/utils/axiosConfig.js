@@ -2,7 +2,7 @@ export const base_url = "http://localhost:5000/api/"
 const getTokenFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
-  console.log(getTokenFromLocalStorage.token);
+
 export const config = {
   
   headers: {

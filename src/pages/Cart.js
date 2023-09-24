@@ -45,7 +45,7 @@ const Cart = () => {
 
   useEffect(() => {
     let sum = 0;
-    for (let index = 0; index < cartState.length; index++) {
+    for (let index = 0; index < cartState?.length; index++) {
       sum = sum + Number(cartState[index].quantity * cartState[index].price);
       setTotalAmount(sum);
     }

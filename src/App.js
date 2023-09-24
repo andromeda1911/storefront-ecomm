@@ -21,6 +21,10 @@ import RefundPolicy from "./pages/RefundPolicy";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import { PrivateRoutes } from "./routing/PrivateRoutes";
+import { OpenRoutes } from "./routing/OpenRoutes";
+import Orders from "./pages/Orders";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -35,13 +39,15 @@ function App() {
             <Route path="product/:id" element={<Product />} />
             <Route path="blog" element={<Blog />} />
             <Route path="blog/:id" element={<SingleBlog />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<Checkout />} />
+            <Route path="cart" element={<PrivateRoutes><Cart /></PrivateRoutes>} />
+            <Route path="my-orders" element={<PrivateRoutes><Orders /></PrivateRoutes>} />
+            <Route path="my-profile" element={<PrivateRoutes><Profile /></PrivateRoutes>} />
+            <Route path="checkout" element={<PrivateRoutes><Checkout /></PrivateRoutes>} />
             <Route path="compare-product" element={<CompareProduct />} />
-            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="wishlist" element={<PrivateRoutes><Wishlist /></PrivateRoutes>} />
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<Forgotpassword />} />
-            <Route path="signup" element={<Signup />} />
+            <Route path="signup" element={<OpenRoutes><Signup/></OpenRoutes>} />
             <Route path="reset-password" element={<Resetpassword />} />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="terms-conditions" element={<TermsAndConditions />} />
