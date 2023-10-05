@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import watch from "../images/watch.jpg";
 import Container from "../components/Container";
@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
-import { createCustomerOrder } from "../features/user/userSlice";
+import { createCustomerOrder, emptyUserCart, getUserCart, resetState } from "../features/user/userSlice";
 
 const shippingSchema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -24,13 +24,15 @@ const shippingSchema = yup.object({
 
 const Checkout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartState = useSelector((state) => state.auth.cartProducts);
+  const authState = useSelector((state) => state.auth);
   const [totalAmount, setTotalAmount] = useState(null);
   const [shippingInfo, setShippingInfo] = useState(null);
-  const [paymentInfo, setPaymentInfo] = useState({
-    razorpayPaymentId: "",
-    razorpayOrderId: "",
-  });
+  // const [paymentInfo, setPaymentInfo] = useState({
+  //   razorpayPaymentId: "",
+  //   razorpayOrderId: "",
+  // });
   const [cartProductState, setcartProductState] = useState([]);
 
   useEffect(() => {
@@ -40,6 +42,29 @@ const Checkout = () => {
       setTotalAmount(sum);
     }
   }, [cartState]);
+
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
+
+  const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
+
+
+  useEffect(() => {
+    if (
+      authState?.orderedProduct?.order !== null &&
+      authState?.orderedProduct?.success === true
+    ) {
+      navigate("/my-orders");
+    }
+  }, [authState]);
 
   const formik = useFormik({
     initialValues: {
@@ -53,15 +78,15 @@ const Checkout = () => {
       other: "",
     },
     validationSchema: shippingSchema,
-    onSubmit: (values) => {
-      
+    onSubmit:  (values) => {
       setShippingInfo(values);
+      localStorage.setItem("address", JSON.stringify(values));
       setTimeout(() => {
         checkoutHandler();
       }, 300);
     },
   });
-  console.log('vals-------', shippingInfo);
+  console.log("vals-------", shippingInfo);
 
   const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -80,7 +105,7 @@ const Checkout = () => {
   useEffect(() => {
     let items = [];
     for (let index = 0; index < cartState?.length; index++) {
-      console.log('checkout cartstate',cartState[index]);
+      console.log("checkout cartstate", cartState[index]);
       items.push({
         product: cartState[index].productId?._id,
         quantity: cartState[index]?.quantity,
@@ -101,7 +126,7 @@ const Checkout = () => {
     }
     const result = await axios.post(
       "http://localhost:5000/api/user/order/checkout",
-      {amount:totalAmount + 29},
+      { amount: totalAmount + 29 },
       config
     );
     if (!result) {
@@ -132,22 +157,25 @@ const Checkout = () => {
           config
         );
 
-        console.log('resulkt value', result.data.razorpayPaymentId);
+        console.log("resulkt value", result.data.razorpayPaymentId);
 
-        setPaymentInfo({
-          razorpayPaymentId: result.data.razorpayPaymentId,
-          razorpayOrderId: result.data.razorpayOrderId,
-        });
-        console.log('paymentinfo=========', paymentInfo);
+        // setPaymentInfo({
+        //   razorpayPaymentId: result.data.razorpayPaymentId,
+        //   razorpayOrderId: result.data.razorpayOrderId,
+        // });
+        // console.log('paymentinfo=========', paymentInfo);
         dispatch(
           createCustomerOrder({
             totalPrice: totalAmount,
             totalPriceAfterDiscount: totalAmount,
             orderItems: cartProductState,
-            paymentInfo,
-            shippingInfo,
+            paymentInfo: result.data,
+            shippingInfo:JSON.parse(localStorage.getItem("address")),
           })
         );
+        dispatch(emptyUserCart())
+        localStorage.removeItem("address");
+        dispatch(resetState())
       },
       prefill: {
         name: "Nikhil Sridhar",

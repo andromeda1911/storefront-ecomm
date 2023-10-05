@@ -1,14 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+import { LuLogOut } from "react-icons/lu";
+import { Typeahead } from "react-bootstrap-typeahead";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import { getDetails } from "../features/products/productSlice";
+import { getUserCart } from "../features/user/userSlice";
+
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
   const cartState = useSelector((state) => state?.auth?.cartProducts);
+  const productState = useSelector((state) => state?.product?.product);
   const [total, setTotal] = useState(null);
+  const [paginate, setPaginate] = useState(true);
+  const [productOpt, setProductOpt] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
+useEffect(() => {
+  dispatch(getUserCart(config2));
+}, []);
+
   useEffect(() => {
     let sum = 0;
     for (let index = 0; index < cartState?.length; index++) {
@@ -19,6 +46,20 @@ const Header = () => {
       setTotalProducts(cartState.length);
     }
   }, [cartState]);
+
+  useEffect(() => {
+    let data = [];
+    for (let index = 0; index < productState?.length; index++) {
+      const element = productState[index];
+      data.push({id: index, prod: element?._id, name: element?.title})
+    }
+    setProductOpt(data);
+  }, [productState]);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
   return (
     <>
       <header className="header-top-strip py-3">
@@ -50,12 +91,18 @@ const Header = () => {
             </div>
             <div className="col-5">
               <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control py-2"
-                  placeholder="Search product here..."
-                  aria-label="Search product here..."
-                  aria-describedby="addon-wrapping"
+                <Typeahead
+                  id="pagination-example"
+                  onPaginate={() => console.log("Results paginated")}
+                  onChange={(selected) => {
+                    navigate(`/product/${selected[0]?.prod}`)
+                    dispatch(getDetails(selected[0]?.prod))
+                  }}
+                  options={productOpt}
+                  paginate={paginate}
+                  labelKey={"name"}
+                  minLength={2}
+                  placeholder="Search for products here"
                 />
                 <span className="input-group-text p-3" id="addon-wrapping">
                   <BsSearch className="fs-6" />
@@ -64,7 +111,7 @@ const Header = () => {
             </div>
             <div className="col-5">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
-                <div>
+                {/* <div>
                   <Link
                     to="/compare-product"
                     className="d-flex align-items-center gap-10 text-white"
@@ -74,7 +121,7 @@ const Header = () => {
                       Compare <br /> Products
                     </p>
                   </Link>
-                </div>
+                </div> */}
                 <div>
                   <Link
                     to="/wishlist"
@@ -115,6 +162,14 @@ const Header = () => {
                       </span>
                       <p className="mb-0">₹ {total ? total : 0}</p>
                     </div>
+                  </Link>
+                </div>
+                <div>
+                  <Link className="d-flex align-items-center gap-10">
+                    <LuLogOut
+                      className="text-white fs-3"
+                      onClick={() => handleLogout()}
+                    />
                   </Link>
                 </div>
               </div>
@@ -167,6 +222,10 @@ const Header = () => {
                     <NavLink to="/blog">Blogs</NavLink>
                     <NavLink to="/my-orders">My Orders</NavLink>
                     <NavLink to="/contact">Contact</NavLink>
+                    <button
+                      className="border border-0 bg-transparent text-white"
+                      type="button"
+                    ></button>
                   </div>
                 </div>
               </div>

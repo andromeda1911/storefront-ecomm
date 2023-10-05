@@ -14,12 +14,24 @@ import {
 import { useEffect } from "react";
 
 const Cart = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
+
+  const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
   const dispatch = useDispatch();
   const [productUpdateDetail, setProductUpdateDetail] = useState(null);
   const [totalAmount, setTotalAmount] = useState(null);
   const cartState = useSelector((state) => state.auth.cartProducts);
   useEffect(() => {
-    dispatch(getUserCart());
+    dispatch(getUserCart(config2));
   }, []);
 
   useEffect(() => {
@@ -31,19 +43,19 @@ const Cart = () => {
         })
       );
       setTimeout(() => {
-        dispatch(getUserCart());
+        dispatch(getUserCart(config2));
       }, 200);
     }
   }, [productUpdateDetail]);
 
   const deleteCartProduct = (cartItemId) => {
-    dispatch(deleteCartItem(cartItemId));
+    dispatch(deleteCartItem({cartItemId: cartItemId, config2: config2}));
     setTimeout(() => {
-      dispatch(getUserCart());
+      dispatch(getUserCart(config2));
     }, 200);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     let sum = 0;
     for (let index = 0; index < cartState?.length; index++) {
       sum = sum + Number(cartState[index].quantity * cartState[index].price);
@@ -100,13 +112,11 @@ const Cart = () => {
                         <input
                           type="number"
                           className="form-control"
-                          name=""
+                          name="quantity"
                           min={1}
                           max={10}
-                          value={
-                            productUpdateDetail?.quantity
-                              ? productUpdateDetail.quantity
-                              : item?.quantity
+                          id={"cart"+item?._id}
+                          value={item?.quantity
                           }
                           onChange={(e) => {
                             setProductUpdateDetail({

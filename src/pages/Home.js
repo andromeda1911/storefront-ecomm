@@ -34,7 +34,7 @@ const Home = () => {
     dispatch(getAllBlogs());
   };
   const getProducts = () => {
-    dispatch(getAllproducts());
+    dispatch(getAllproducts({sort:null,tag:[],brand:[],category:[],minPrice:null,maxPrice:null}));
   };
   const addToWish = (id) => {
     dispatch(addToWishlist(id));

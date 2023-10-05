@@ -4,9 +4,9 @@ import { productService } from "./productService";
 
 export const getAllproducts = createAsyncThunk(
   "product/get",
-  async (thunkAPI) => {
+  async (data,thunkAPI) => {
     try {
-      return productService.getProducts();
+      return productService.getProducts(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -18,6 +18,17 @@ export const getDetails = createAsyncThunk(
   async (id,thunkAPI) => {
     try {
       return productService.getProductDetails(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const addRating = createAsyncThunk(
+  "product/rating",
+  async (data,thunkAPI) => {
+    try {
+      return productService.rateProduct(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -63,6 +74,24 @@ export const productSlice = createSlice({
         state.singleproduct = action.payload;
       })
       .addCase(getDetails.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(addRating.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addRating.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.rating = true;
+        state.message = "Rating added"
+        if(state.isSuccess) {
+          toast.success = "Rating added!";
+        }
+      })
+      .addCase(addRating.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = true;
         state.isSuccess = false;

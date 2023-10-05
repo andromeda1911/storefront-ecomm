@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../features/user/userSlice";
 import { useState } from "react";
+import { FiEdit } from "react-icons/fi";
 
 const profileSchema = yup.object({
   firstname: yup.string().required("First name is required"),
@@ -19,6 +20,18 @@ const profileSchema = yup.object({
 });
 
 const Profile = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
+
+  const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.auth.user);
   const [edit, setEdit] = useState(true);
@@ -33,7 +46,8 @@ const Profile = () => {
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
-      dispatch(updateUserDetails(values));
+      dispatch(updateUserDetails({ data: values, config2: config2 }));
+      setEdit(true);
     },
   });
 
@@ -46,6 +60,7 @@ const Profile = () => {
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center">
               <h3 className="my-3">Update Profile</h3>
+              <FiEdit className="fs-3" onClick={() => setEdit(false)} />
             </div>
           </div>
           <div className="col-12">

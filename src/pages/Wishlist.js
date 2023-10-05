@@ -31,13 +31,13 @@ const Wishlist = () => {
       <Meta title={"Wishlist"}></Meta>
       <BreadCrumb title="Wishlist" />
       <Container class1="wishlist-wrapper home-wrapper-2 py-5">
-        <div className="row">
-          {wishlistState.user.wishlist.length === 0 && <div className="fs-3">Your wishlist is empty!</div> }
-          {wishlistState.user.wishlist.map((item, index) => {
+        <div className="row text-center">
+          {wishlistState?.user?.wishlist?.length === 0 && <div className="fs-3">Your wishlist is empty!</div> }
+          {wishlistState?.user?.wishlist?.map((item, index) => {
             return (
               <div className="col-3" key={index}>
                 <div
-                  className="wishlist-card position-relative
+                  className="wishlist-card bg-white position-relative
               "
                 >
                   <img
@@ -52,7 +52,7 @@ const Wishlist = () => {
                     <img
                       src={
                         item?.images[0]?.url
-                          ? item?.images[0].url
+                          ? item?.images[0]?.url
                           : "images/watch.jpg"
                       }
                       className="img-fluid w-100 mx-auto"
