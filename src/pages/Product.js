@@ -222,7 +222,7 @@ const Product = () => {
                     className={
                       alreadyAdded
                         ? "ms-0"
-                        : "ms5" + "d-flex align-items-center gap-30 ms-5"
+                        : "ms5 " + "d-flex align-items-center gap-10 ms-5"
                     }
                   >
                     <button

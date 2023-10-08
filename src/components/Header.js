@@ -3,11 +3,13 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { LuLogOut } from "react-icons/lu";
+import { LiaUserSolid } from "react-icons/lia";
+import { PiShoppingBagLight } from "react-icons/pi";
+import { BsHeart } from "react-icons/bs";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getDetails } from "../features/products/productSlice";
 import { getUserCart } from "../features/user/userSlice";
-
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -20,21 +22,21 @@ const Header = () => {
   const [productOpt, setProductOpt] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const getTokenFromLocalStorage = localStorage.getItem("customer")
-  ? JSON.parse(localStorage.getItem("customer"))
-  : null;
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
 
-const config2 = {
-  headers: {
-    Authorization: `Bearer ${
-      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
-    }`,
-    Accept: "application/json",
-  },
-};
+  const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
 
-useEffect(() => {
-  dispatch(getUserCart(config2));
-}, []);
+  useEffect(() => {
+    dispatch(getUserCart(config2));
+  }, []);
 
   useEffect(() => {
     let sum = 0;
@@ -51,7 +53,7 @@ useEffect(() => {
     let data = [];
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
-      data.push({id: index, prod: element?._id, name: element?.title})
+      data.push({ id: index, prod: element?._id, name: element?.title });
     }
     setProductOpt(data);
   }, [productState]);
@@ -62,7 +64,7 @@ useEffect(() => {
   };
   return (
     <>
-      <header className="header-top-strip py-3">
+      {/* <header className="header-top-strip py-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-6">
@@ -80,38 +82,119 @@ useEffect(() => {
             </div>
           </div>
         </div>
-      </header>
-      <header className="header-upper py-3">
-        <div className="container-xxl">
-          <div className="row align-items-center">
-            <div className="col-2">
-              <h1>
-                <Link className="text-white">Storefront</Link>
-              </h1>
+      </header> */}
+
+      <header className="header-upper">
+        {/* <div className="container-xxl"> */}
+        <div className="row align-items-center px-4">
+          <div className="col-1">
+            <h1>
+              <Link>
+                <img src="images/logo.png" width={200} height={100} />
+              </Link>
+            </h1>
+          </div>
+          <div className="col-5">
+            <div className="menu-nav d-flex justify-content-center gap-30">
+              <NavLink to="" className="top-menu-link">
+                Home
+                <div className="category-container hide">
+                  <div className="d-flex flex-column">
+                      <NavLink to={"/product/"+"tshirts"}>Tshirts</NavLink>
+                      <NavLink >Jeans</NavLink>
+                      <NavLink >Ethnic Wear</NavLink>
+                  </div>
+                </div>
+              </NavLink>
+              <NavLink to="/product" className="top-menu-link">
+                Our Store
+                <div className="category-container hide">
+                  <div>
+                    <li>
+                      <ul>
+                        <li>Topwear</li>
+                        <li>Tshirts</li>
+                        <li>Jeans</li>
+                        <li>Ethnic Wear</li>
+                        <li>Dress Materials</li>
+                      </ul>
+                    </li>
+                  </div>
+                </div>
+              </NavLink>
+              <NavLink to="/blog" className="top-menu-link">
+                Blogs
+                <div className="category-container hide">
+                  <div>
+                    <li>
+                      <ul>
+                        <li>Topwear</li>
+                        <li>Tshirts</li>
+                        <li>Jeans</li>
+                        <li>Ethnic Wear</li>
+                        <li>Dress Materials</li>
+                      </ul>
+                    </li>
+                  </div>
+                </div>
+              </NavLink>
+              <NavLink to="/my-orders" className="top-menu-link">
+                My Orders
+                <div className="category-container hide">
+                  <div>
+                    <li>
+                      <ul>
+                        <li>Topwear</li>
+                        <li>Tshirts</li>
+                        <li>Jeans</li>
+                        <li>Ethnic Wear</li>
+                        <li>Dress Materials</li>
+                      </ul>
+                    </li>
+                  </div>
+                </div>
+              </NavLink>
+              <NavLink to="/contact" className="top-menu-link">
+                Contact
+                <div className="category-container hide">
+                  <div>
+                    <li>
+                      <ul>
+                        <li>Topwear</li>
+                        <li>Tshirts</li>
+                        <li>Jeans</li>
+                        <li>Ethnic Wear</li>
+                        <li>Dress Materials</li>
+                      </ul>
+                    </li>
+                  </div>
+                </div>
+              </NavLink>
             </div>
-            <div className="col-5">
-              <div className="input-group">
-                <Typeahead
-                  id="pagination-example"
-                  onPaginate={() => console.log("Results paginated")}
-                  onChange={(selected) => {
-                    navigate(`/product/${selected[0]?.prod}`)
-                    dispatch(getDetails(selected[0]?.prod))
-                  }}
-                  options={productOpt}
-                  paginate={paginate}
-                  labelKey={"name"}
-                  minLength={2}
-                  placeholder="Search for products here"
-                />
-                <span className="input-group-text p-3" id="addon-wrapping">
-                  <BsSearch className="fs-6" />
-                </span>
-              </div>
+          </div>
+          <div className="col-3">
+            <div className="input-group">
+              <Typeahead
+                id="pagination-example"
+                onPaginate={() => console.log("Results paginated")}
+                onChange={(selected) => {
+                  navigate(`/product/${selected[0]?.prod}`);
+                  dispatch(getDetails(selected[0]?.prod));
+                }}
+                options={productOpt}
+                paginate={paginate}
+                labelKey={"name"}
+                minLength={2}
+                placeholder="Search for products here"
+              />
+              <span className="input-group-text p-3" id="addon-wrapping">
+                <BsSearch className="fs-6" />
+              </span>
             </div>
-            <div className="col-5">
-              <div className="header-upper-links d-flex align-items-center justify-content-between">
-                {/* <div>
+          </div>
+          <div className="col-3">
+            <div className="header-upper-links d-flex align-items-center gap-30">
+              {/* <div>
                   <Link
                     to="/compare-product"
                     className="d-flex align-items-center gap-10 text-white"
@@ -122,99 +205,72 @@ useEffect(() => {
                     </p>
                   </Link>
                 </div> */}
-                <div>
-                  <Link
-                    to="/wishlist"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <img src="/images/wishlist.svg" alt="wishlist" />
+              <div>
+                <Link
+                  to={authState?.user === null ? "/login" : "/my-profile"}
+                  className="d-flex align-items-center gap-10 profile-icon-container"
+                >
+                  {/* <img src="/images/user.svg" alt="user" /> */}
+                  <LiaUserSolid className="fs-4" />
+                  {authState?.user === null ? (
                     <p className="mb-0">
-                      Favorite <br /> Wishlist
+                      Login <br /> My Account
                     </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to={authState?.user === null ? "/login" : "/my-profile"}
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <img src="/images/user.svg" alt="user" />
-                    {authState?.user === null ? (
-                      <p className="mb-0">
-                        Login <br /> My Account
-                      </p>
-                    ) : (
-                      <p className="mb-0">
-                        Welcome {authState?.user?.firstname}
-                      </p>
-                    )}
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to="/cart"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <img src="/images/cart.svg" alt="cart" />
-                    <div className="d-flex flex-column gap-10">
-                      <span className="badge bg-white text-dark">
-                        {totalProducts ? totalProducts : 0}
-                      </span>
-                      <p className="mb-0">₹ {total ? total : 0}</p>
+                  ) : (
+                    <p className="mb-0">Welcome {authState?.user?.firstname}</p>
+                  )}
+                  <div className="profile-container hide">
+                    <div className="d-flex flex-column">
+                      <NavLink to="/my-orders">My Orders</NavLink>
+                      <NavLink to="/wishlist">Wishlist</NavLink>
+                      <NavLink to="/wishlist">Coupons</NavLink>
+                      <NavLink to="/contact">Contact Us</NavLink>
+                      <NavLink onClick={() => handleLogout()}>Logout</NavLink>
                     </div>
-                  </Link>
-                </div>
-                <div>
+                  </div>
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="/wishlist"
+                  className="d-flex align-items-center gap-10 "
+                >
+                  {/* <img src="/images/wishlist.svg" alt="wishlist" /> */}
+                  <BsHeart className="fs-5" />
+                  <p className="mb-0">Wishlist</p>
+                </Link>
+              </div>
+
+              <div>
+                <Link to="/cart" className="d-flex align-items-center gap-10">
+                  {/* <img src="/images/cart.svg" alt="cart" /> */}
+                  <PiShoppingBagLight className="fs-4" />
+                  <div className="d-flex flex-column gap-10">
+                    <span className="badge bg-white text-dark">
+                      {totalProducts ? totalProducts : 0}
+                    </span>
+                    {/* <p className="mb-0">₹ {total ? total : 0}</p> */}
+                  </div>
+                </Link>
+              </div>
+              {/* <div>
                   <Link className="d-flex align-items-center gap-10">
                     <LuLogOut
                       className="text-white fs-3"
                       onClick={() => handleLogout()}
                     />
                   </Link>
-                </div>
-              </div>
+                </div> */}
             </div>
           </div>
         </div>
+        {/* </div> */}
       </header>
-      <header className="header-bottom py-3">
+      {/* <header className="header-bottom py-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-15">
-                <div>
-                  <div className="dropdown">
-                    <button
-                      className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 d-flex align-items-center"
-                      type="button"
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      Shop Categories
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Action
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Another action
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Something else here
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
                     <NavLink to="">Home</NavLink>
@@ -232,7 +288,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
     </>
   );
 };

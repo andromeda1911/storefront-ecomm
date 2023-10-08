@@ -49,7 +49,7 @@ const ProductCard = (props) => {
               </div>
               <div className="product-details">
                 <h6 className="brand">{item?.brand}</h6>
-                <h5 className="product-title">{item?.title}</h5>
+                <h5 className="product-title">{item?.title?.substr(0, 70) + "..."}</h5>
                 <ReactStars
                   count={5}
                   size={24}
@@ -66,7 +66,7 @@ const ProductCard = (props) => {
                 <p className="price">₹ {item?.price}</p>
               </div>
               <div className="action-bar position-absolute">
-                <div className="d-flex flex-column gap-15">
+                {/* <div className="d-flex flex-column gap-15">
                   <Link to={'/product/'+item?._id} className="border-0 bg-transparent">
                     <img src={view} alt="view" />
                   </Link>
@@ -76,7 +76,7 @@ const ProductCard = (props) => {
                   <button className="border-0 bg-transparent">
                     <img src={addcart} alt="addcart" />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
