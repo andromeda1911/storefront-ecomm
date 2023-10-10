@@ -36,15 +36,14 @@ const getUserWishlist = async() => {
 }
 
 const addToCart = async(data) => {
-  const response = await axios.post(`${base_url}user/cart`, data, config);
+  const response = await axios.post(`${base_url}user/cart`, data, data.config2);
   if(response.data){
       return response.data;
   }
 }
 
 const getCart = async(data) => {
-  console.log('getcartconfig=======', config);
-  const response = await axios.get(`${base_url}user/cart`, data);
+  const response = await axios.get(`${base_url}user/cart`, data, data.config2);
   if(response.data){
       return response.data;
   }

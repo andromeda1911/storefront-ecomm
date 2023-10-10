@@ -16,6 +16,19 @@ import { toast } from "react-toastify";
 import { addProdToCart, getUserCart } from "../features/user/userSlice";
 
 const Product = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
   const [color, setColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [alreadyAdded, setAlreadyAdded] = useState(false);
@@ -30,7 +43,7 @@ const Product = () => {
 
   useEffect(() => {
     dispatch(getDetails(getProductId));
-    dispatch(getUserCart());
+    dispatch(getUserCart(config2));
     dispatch(getAllproducts());
   }, []);
 
@@ -85,6 +98,7 @@ const Product = () => {
           quantity,
           color,
           price: productState?.price,
+          config2: config2
         })
       );
     }

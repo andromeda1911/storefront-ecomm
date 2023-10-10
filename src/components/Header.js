@@ -8,8 +8,12 @@ import { PiShoppingBagLight } from "react-icons/pi";
 import { BsHeart } from "react-icons/bs";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import { getDetails } from "../features/products/productSlice";
+import {
+  getAllproductsWithoutFilter,
+  getDetails,
+} from "../features/products/productSlice";
 import { getUserCart } from "../features/user/userSlice";
+import { getCategories } from "../features/pcategory/pcategorySlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,6 +21,11 @@ const Header = () => {
   const authState = useSelector((state) => state.auth);
   const cartState = useSelector((state) => state?.auth?.cartProducts);
   const productState = useSelector((state) => state?.product?.product);
+  const allProducts = useSelector((state) => state?.product?.productsNoFilter);
+  const productCategories = useSelector(
+    (state) => state?.pCategory?.categories
+  );
+  const [tags, setTags] = useState([]);
   const [total, setTotal] = useState(null);
   const [paginate, setPaginate] = useState(true);
   const [productOpt, setProductOpt] = useState([]);
@@ -36,6 +45,8 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(getUserCart(config2));
+    dispatch(getCategories());
+    dispatch(getAllproductsWithoutFilter());
   }, []);
 
   useEffect(() => {
@@ -89,87 +100,40 @@ const Header = () => {
         <div className="row align-items-center px-4">
           <div className="col-1">
             <h1>
-              <Link>
+              <Link to="/">
                 <img src="images/logo.png" width={200} height={100} />
               </Link>
             </h1>
           </div>
           <div className="col-5">
             <div className="menu-nav d-flex justify-content-center gap-30">
-              <NavLink to="" className="top-menu-link">
-                Home
-                <div className="category-container hide">
-                  <div className="d-flex flex-column">
-                      <NavLink to={"/product/"+"tshirts"}>Tshirts</NavLink>
-                      <NavLink >Jeans</NavLink>
-                      <NavLink >Ethnic Wear</NavLink>
-                  </div>
-                </div>
-              </NavLink>
-              <NavLink to="/product" className="top-menu-link">
-                Our Store
-                <div className="category-container hide">
-                  <div>
-                    <li>
-                      <ul>
-                        <li>Topwear</li>
-                        <li>Tshirts</li>
-                        <li>Jeans</li>
-                        <li>Ethnic Wear</li>
-                        <li>Dress Materials</li>
-                      </ul>
-                    </li>
-                  </div>
-                </div>
-              </NavLink>
-              <NavLink to="/blog" className="top-menu-link">
-                Blogs
-                <div className="category-container hide">
-                  <div>
-                    <li>
-                      <ul>
-                        <li>Topwear</li>
-                        <li>Tshirts</li>
-                        <li>Jeans</li>
-                        <li>Ethnic Wear</li>
-                        <li>Dress Materials</li>
-                      </ul>
-                    </li>
-                  </div>
-                </div>
-              </NavLink>
-              <NavLink to="/my-orders" className="top-menu-link">
-                My Orders
-                <div className="category-container hide">
-                  <div>
-                    <li>
-                      <ul>
-                        <li>Topwear</li>
-                        <li>Tshirts</li>
-                        <li>Jeans</li>
-                        <li>Ethnic Wear</li>
-                        <li>Dress Materials</li>
-                      </ul>
-                    </li>
-                  </div>
-                </div>
-              </NavLink>
-              <NavLink to="/contact" className="top-menu-link">
-                Contact
-                <div className="category-container hide">
-                  <div>
-                    <li>
-                      <ul>
-                        <li>Topwear</li>
-                        <li>Tshirts</li>
-                        <li>Jeans</li>
-                        <li>Ethnic Wear</li>
-                        <li>Dress Materials</li>
-                      </ul>
-                    </li>
-                  </div>
-                </div>
-              </NavLink>
+              {productCategories &&
+                productCategories?.map((category, index) => {
+                  return (
+                    <NavLink to="" className="top-menu-link" index={index}>
+                      {category.title}
+                      <div className="category-container hide">
+                        <div className="d-flex flex-column">
+                          {allProducts &&
+                            allProducts?.map((item, index) => {
+                              if (category.title === item.category && item.tags !== undefined) {
+                                return (
+                                  <NavLink to={"/store?q=" + item.tags}>
+                                    {item.tags}
+                                  </NavLink>
+                                );
+                              }
+                            })}
+                          {/* <NavLink to={"/store?q=" + "tshirts"}>
+                            Tshirts
+                          </NavLink>
+                          <NavLink>Jeans</NavLink>
+                          <NavLink>Ethnic Wear</NavLink> */}
+                        </div>
+                      </div>
+                    </NavLink>
+                  );
+                })}
             </div>
           </div>
           <div className="col-3">

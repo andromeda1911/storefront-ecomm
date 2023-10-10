@@ -9,6 +9,13 @@ const getProducts = async (data) => {
   }
 };
 
+const getProductsNoFilter = async () => {
+  const response = await axios.get(`${base_url}product`);
+  if (response.data) {
+    return response.data;
+  }
+};
+
 const getProductDetails = async (id) => {
   const response = await axios.get(`${base_url}product/${id}`);
   if (response.data) {
@@ -26,5 +33,6 @@ const rateProduct = async (data) => {
 export const productService = {
   getProducts,
   getProductDetails,
-  rateProduct
+  rateProduct,
+  getProductsNoFilter
 };

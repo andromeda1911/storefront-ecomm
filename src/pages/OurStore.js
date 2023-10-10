@@ -8,11 +8,29 @@ import Color from "../components/Color";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllproducts } from "../features/products/productSlice";
+import { useLocation } from "react-router-dom";
+import {
+  getCategories,
+  resetState,
+} from "../features/pcategory/pcategorySlice";
+import { getTags } from "../features/tags/productTagSlice";
+import { getBrands } from "../features/brand/brandSlice";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const selectedTag = location.search.split("=")[1];
   const productState = useSelector((state) => state.product.product);
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(getCategories());
+    // dispatch(getTags());
+    // dispatch(getBrands());
+  }, []);
+  // const productCategories = useSelector((state) => state?.pCategory?.categories);
+  // const prodTag = useSelector((state) => state?.productTag?.tags);
+  // const brandState = useSelector((state) => state.brand.brands);
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
@@ -25,32 +43,33 @@ const OurStore = () => {
   const [sort, setSort] = useState(null);
 
   useEffect(() => {
-    let newBrands = [];
-    let category = [];
-    let newtags = [];
-    for (let index = 0; index < productState?.length; index++) {
-      const element = productState[index];
-      newBrands.push(element.brand);
-      category.push(element.category);
-      if(element.tags !== undefined) {
-        newtags.push(element.tags);
+      let newBrands = [];
+      let category = [];
+      let newtags = [];
+      for (let index = 0; index < productState?.length; index++) {
+        const element = productState[index];
+        newBrands.push(element.brand);
+        category.push(element.category);
+        if (element.tags !== undefined) {
+          newtags.push(element.tags);
+        }
       }
-      
-    }
-    console.log(newtags);
-    setBrands(newBrands);
-    setCategories(category);
-    setTags(newtags);
+      setBrands(newBrands);
+      setCategories(category);
+      setTags(newtags);
   }, [productState]);
 
   useEffect(() => {
+    if (selectedTag !== undefined) {
+      setTag(selectedTag);
+    }
     getProducts();
-  }, [sort,tag,brand,category,minPrice,maxPrice]);
+  }, [sort, tag, brand, category, minPrice, maxPrice]);
   const getProducts = () => {
-    dispatch(getAllproducts({sort,tag,brand,category,minPrice,maxPrice}));
+    dispatch(
+      getAllproducts({ sort, tag, brand, category, minPrice, maxPrice })
+    );
   };
-
-
 
   return (
     <>
@@ -111,7 +130,7 @@ const OurStore = () => {
                       className="form-control"
                       id="floatingInput"
                       placeholder="From"
-                      onChange={(e)=>setMinPrice(e.target.value)}
+                      onChange={(e) => setMinPrice(e.target.value)}
                     />
                     <label htmlFor="floatingInput">From</label>
                   </div>
@@ -121,7 +140,7 @@ const OurStore = () => {
                       className="form-control"
                       id="floatingInput"
                       placeholder="To"
-                      onChange={(e)=>setMaxPrice(e.target.value)}
+                      onChange={(e) => setMaxPrice(e.target.value)}
                     />
                     <label htmlFor="floatingInput">To</label>
                   </div>
@@ -161,12 +180,16 @@ const OurStore = () => {
               <h3 className="filter-title">Product Tags</h3>
               <div>
                 <div className="product-tags d-flex flex-wrap align-items-center gap-10">
-                {tags &&
+                  {tags &&
                     [...new Set(tags)].map((item, index) => {
                       return (
-                        <span key={index} onClick={() => setTag(item)} className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3">
-                        {item }
-                      </span>
+                        <span
+                          key={index}
+                          onClick={() => setTag(item)}
+                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
+                        >
+                          {item}
+                        </span>
                       );
                     })}
                 </div>
@@ -176,12 +199,16 @@ const OurStore = () => {
               <h3 className="filter-title">Product Brands</h3>
               <div>
                 <div className="product-tags d-flex flex-wrap align-items-center gap-10">
-                {brands &&
+                  {brands &&
                     [...new Set(brands)].map((item, index) => {
                       return (
-                        <span key={index} onClick={() => setBrand(item)} className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3">
-                        {item }
-                      </span>
+                        <span
+                          key={index}
+                          onClick={() => setBrand(item)}
+                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
+                        >
+                          {item}
+                        </span>
                       );
                     })}
                 </div>
@@ -203,9 +230,7 @@ const OurStore = () => {
                     onChange={(e) => setSort(e.target.value)}
                   >
                     <option value="title">Alphabetically, A-Z</option>
-                    <option value="-title">
-                      Alphabetically, Z-A
-                    </option>
+                    <option value="-title">Alphabetically, Z-A</option>
                     <option value="price">Price, low to high</option>
                     <option value="-price">Price, high to low</option>
                     <option value="createdAt">Date, old to new</option>
