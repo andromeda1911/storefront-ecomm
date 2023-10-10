@@ -14,6 +14,7 @@ import {
 } from "../features/products/productSlice";
 import { getUserCart } from "../features/user/userSlice";
 import { getCategories } from "../features/pcategory/pcategorySlice";
+import { all } from "axios";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Header = () => {
   const productCategories = useSelector(
     (state) => state?.pCategory?.categories
   );
-  const [tags, setTags] = useState([]);
+  const [categoryTags, setcategoryTags] = useState([]);
   const [total, setTotal] = useState(null);
   const [paginate, setPaginate] = useState(true);
   const [productOpt, setProductOpt] = useState([]);
@@ -48,6 +49,32 @@ const Header = () => {
     dispatch(getCategories());
     dispatch(getAllproductsWithoutFilter());
   }, []);
+
+  useEffect(() => {
+    let navMenuItems = [];
+    for (let index = 0; index < productCategories?.length; index++) {
+      const element = productCategories[index];
+      let newtags = [];
+      allProducts?.map((product) => {
+        if (element.title === product.category && product.tags !== undefined) {
+          if (!newtags.includes(product.tags)) {
+            newtags.push(product.tags);
+          }
+          let containsElement = navMenuItems.some(
+            (obj) => obj["categoryName"] === element.title
+          );
+          if (!containsElement) {
+            navMenuItems.push({
+              categoryName: element.title,
+              categoryTags: newtags,
+            });
+          }
+        }
+      });
+    }
+    console.log("========", navMenuItems);
+    setcategoryTags(navMenuItems);
+  }, [allProducts, productCategories]);
 
   useEffect(() => {
     let sum = 0;
@@ -107,28 +134,19 @@ const Header = () => {
           </div>
           <div className="col-5">
             <div className="menu-nav d-flex justify-content-center gap-30">
-              {productCategories &&
-                productCategories?.map((category, index) => {
+              {categoryTags &&
+                categoryTags?.map((item, index) => {
                   return (
                     <NavLink to="" className="top-menu-link" index={index}>
-                      {category.title}
+                      {item.categoryName}
                       <div className="category-container hide">
                         <div className="d-flex flex-column">
-                          {allProducts &&
-                            allProducts?.map((item, index) => {
-                              if (category.title === item.category && item.tags !== undefined) {
-                                return (
-                                  <NavLink to={"/store?q=" + item.tags}>
-                                    {item.tags}
-                                  </NavLink>
-                                );
-                              }
+                          {item &&
+                            item.categoryTags?.map((tag, index) => {
+                              return (
+                                <NavLink to={"/store?q=" + tag}>{tag}</NavLink>
+                              );
                             })}
-                          {/* <NavLink to={"/store?q=" + "tshirts"}>
-                            Tshirts
-                          </NavLink>
-                          <NavLink>Jeans</NavLink>
-                          <NavLink>Ethnic Wear</NavLink> */}
                         </div>
                       </div>
                     </NavLink>
@@ -140,7 +158,6 @@ const Header = () => {
             <div className="input-group">
               <Typeahead
                 id="pagination-example"
-                onPaginate={() => console.log("Results paginated")}
                 onChange={(selected) => {
                   navigate(`/product/${selected[0]?.prod}`);
                   dispatch(getDetails(selected[0]?.prod));
