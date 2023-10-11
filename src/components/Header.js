@@ -72,7 +72,6 @@ const Header = () => {
         }
       });
     }
-    console.log("========", navMenuItems);
     setcategoryTags(navMenuItems);
   }, [allProducts, productCategories]);
 
@@ -137,7 +136,7 @@ const Header = () => {
               {categoryTags &&
                 categoryTags?.map((item, index) => {
                   return (
-                    <NavLink to="" className="top-menu-link" index={index}>
+                    <NavLink to={"/store?c="+item.categoryName} className="top-menu-link" index={index}>
                       {item.categoryName}
                       <div className="category-container hide">
                         <div className="d-flex flex-column">

@@ -624,6 +624,13 @@ footer .input-group-text {
   top: 17%;
 }
 
+ .deselect-filter{
+  font-size: 9px;
+  position: absolute;
+  left: 88%;
+  top: 12%;
+}
+
 /* contact page  */
 
 .contact-inner-wrapper {

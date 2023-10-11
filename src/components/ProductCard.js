@@ -1,6 +1,6 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import prodcompare from "../images/prodcompare.svg";
 import wish from "../images/wish.svg";
 import wishlist from "../images/wishlist.svg";
@@ -14,6 +14,7 @@ import { addToWishlist } from "../features/user/userSlice";
 const ProductCard = (props) => {
   const { grid, data } = props;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   let location = useLocation();
   const addToWish = (id) => {
     dispatch(addToWishlist(id));
@@ -43,13 +44,14 @@ const ProductCard = (props) => {
               <div className="product-image">
                 <img
                   src={item?.images[0]?.url}
-                  className="img-fluid mx-auto"
+                  className="img-fluid mx-auto cursor-pointer"
                   alt="product image"
+                  onClick={() => navigate("/product/"+item?._id)}
                 />
               </div>
               <div className="product-details">
                 <h6 className="brand">{item?.brand}</h6>
-                <h5 className="product-title">{item?.title?.substr(0, 70) + "..."}</h5>
+                <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 70) + "..."}</h5>
                 <ReactStars
                   count={5}
                   size={24}

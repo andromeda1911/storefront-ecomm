@@ -20,7 +20,8 @@ const OurStore = () => {
   const [grid, setGrid] = useState(4);
   const dispatch = useDispatch();
   const location = useLocation();
-  const selectedTag = location.search.split("=")[1];
+  const selectedMenuItem = location.search.split("=")[0];
+  const selectedSubMenuItem = location.search.split("=")[1];
   const productState = useSelector((state) => state.product.product);
   useEffect(() => {
     dispatch(resetState());
@@ -32,6 +33,8 @@ const OurStore = () => {
   // const prodTag = useSelector((state) => state?.productTag?.tags);
   // const brandState = useSelector((state) => state.brand.brands);
   const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState(false);
+  const [selectedProductTag, setSelectedProductTag] = useState(false);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -43,26 +46,27 @@ const OurStore = () => {
   const [sort, setSort] = useState(null);
 
   useEffect(() => {
-      let newBrands = [];
-      let category = [];
-      let newtags = [];
-      for (let index = 0; index < productState?.length; index++) {
-        const element = productState[index];
-        newBrands.push(element.brand);
-        category.push(element.category);
-        if (element.tags !== undefined) {
-          newtags.push(element.tags);
-        }
+    let newBrands = [];
+    let category = [];
+    let newtags = [];
+    for (let index = 0; index < productState?.length; index++) {
+      const element = productState[index];
+      newBrands.push(element.brand);
+      category.push(element.category);
+      if (element.tags !== undefined) {
+        newtags.push(element.tags);
       }
-      setBrands(newBrands);
-      setCategories(category);
-      setTags(newtags);
+    }
+    setBrands(newBrands);
+    setCategories(category);
+    setTags(newtags);
   }, [productState]);
 
   useEffect(() => {
-    if (selectedTag !== undefined) {
-      setTag(selectedTag);
-    }
+    selectedMenuItem.includes('c') ? setCategory(selectedSubMenuItem) : setTag(selectedSubMenuItem);
+    // if (selectedTag !== undefined) {
+    //   setTag(selectedTag);
+    // }
     getProducts();
   }, [sort, tag, brand, category, minPrice, maxPrice]);
   const getProducts = () => {
@@ -85,7 +89,11 @@ const OurStore = () => {
                   {categories &&
                     [...new Set(categories)].map((item, index) => {
                       return (
-                        <li key={index} onClick={() => setCategory(item)}>
+                        <li
+                          key={index}
+                          className="cursor-pointer"
+                          onClick={() => setCategory(item)}
+                        >
                           {item}
                         </li>
                       );
@@ -185,10 +193,18 @@ const OurStore = () => {
                       return (
                         <span
                           key={index}
-                          onClick={() => setTag(item)}
-                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
+                          onClick={() => {
+                            selectedProductTag ? setTag([]) : setTag(item);
+                            selectedProductTag
+                              ? setSelectedProductTag(false)
+                              : setSelectedProductTag(true);
+                          }}
+                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
                         >
                           {item}
+                          {
+                            selectedProductTag && <span className="position-absolute deselect-filter">x</span>
+                          }
                         </span>
                       );
                     })}
@@ -204,10 +220,24 @@ const OurStore = () => {
                       return (
                         <span
                           key={index}
-                          onClick={() => setBrand(item)}
-                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3"
+                          onClick={() => {
+                            console.log(
+                              "is brand selected==========",
+                              selectedBrand
+                            );
+
+                            selectedBrand ? setBrand([]) : setBrand(item);
+                            selectedBrand
+                              ? setSelectedBrand(false)
+                              : setSelectedBrand(true);
+                          }}
+                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
                         >
                           {item}
+                          {
+                            selectedBrand && <span className="position-absolute deselect-filter">x</span>
+                          }
+                          
                         </span>
                       );
                     })}
