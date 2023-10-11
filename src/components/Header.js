@@ -194,10 +194,12 @@ const Header = () => {
                   <LiaUserSolid className="fs-4" />
                   {authState?.user === null ? (
                     <p className="mb-0">
-                      Login <br /> My Account
+                      Login <br /> 
                     </p>
                   ) : (
-                    <p className="mb-0">Welcome {authState?.user?.firstname}</p>
+                    <p className="mb-0">My Account 
+                    {/* {authState?.user?.firstname} */}
+                    </p>
                   )}
                   <div className="profile-container hide">
                     <div className="d-flex flex-column">

@@ -231,7 +231,7 @@ const OurStore = () => {
                               ? setSelectedBrand(false)
                               : setSelectedBrand(true);
                           }}
-                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
+                          className={"text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"}
                         >
                           {item}
                           {
