@@ -146,7 +146,7 @@ const Home = () => {
                 return (
                   <div
                   key={index}
-                  className="col-3 mt-3"
+                  className="col-6 col-md-3 mt-3"
                 >
                   <div
                     className="product-card position-relative"
@@ -204,7 +204,7 @@ const Home = () => {
                 return (
                   <div
                   key={index}
-                  className="col-3 mt-3"
+                  className="col-6 col-md-3 mt-3"
                 >
                   <div
                     className="product-card position-relative"
@@ -283,7 +283,7 @@ const Home = () => {
                 return (
                   <div
                   key={index}
-                  className="col-3"
+                  className="col-6 col-md-3"
                 >
                   <div
                   //   to={
@@ -360,7 +360,7 @@ const Home = () => {
                 return (
                   <div
                   key={index}
-                  className="col-3"
+                  className="col-6 col-md-3"
                 >
                   <div
                     className="product-card position-relative offer-section"
@@ -419,7 +419,7 @@ const Home = () => {
                 return (
                   <div
                   key={index}
-                  className="col-3"
+                  className="col-6 col-md-3"
                 >
                   <div
                     className="product-card position-relative"
@@ -478,7 +478,7 @@ const Home = () => {
                 return (
                   <div
                   key={index}
-                  className="col-3"
+                  className="col-6 col-md-3"
                 >
                   <div
                     className="product-card position-relative"
@@ -727,7 +727,7 @@ const Home = () => {
           {blogState &&
             blogState?.map((item, index) => {
               return (
-                <div className="col-3 mb-3" key={index}>
+                <div className="col-6 col-md-3 mb-3" key={index}>
                   <BlogCard
                     id={item?._id}
                     title={item?.title}

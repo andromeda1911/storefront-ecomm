@@ -3,6 +3,7 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { LuLogOut } from "react-icons/lu";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { LiaUserSolid } from "react-icons/lia";
 import { PiShoppingBagLight } from "react-icons/pi";
 import { BsHeart } from "react-icons/bs";
@@ -31,6 +32,7 @@ const Header = () => {
   const [paginate, setPaginate] = useState(true);
   const [productOpt, setProductOpt] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [showSideBar, setShowSideBar] = useState(false);
   const getTokenFromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))
     : null;
@@ -95,6 +97,18 @@ const Header = () => {
     setProductOpt(data);
   }, [productState]);
 
+  const handleAccordion = (event, category) => {
+    const tagList = document.getElementById("taglist-" + category);
+    console.log('e===========', event);
+    if (tagList.classList.contains("show-tag")) {
+      tagList.classList.remove("show-tag");
+      event.target.textContent = '+'
+    } else {
+      tagList.classList.add("show-tag");
+      event.target.textContent = '-'
+    }
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     window.location.reload();
@@ -124,19 +138,26 @@ const Header = () => {
       <header className="header-upper">
         {/* <div className="container-xxl"> */}
         <div className="row align-items-center px-4">
-          <div className="col-1">
+          <div className="col-1 d-none d-md-block">
             <h1>
               <Link to="/">
                 <img src="images/logo.png" width={200} height={100} />
               </Link>
             </h1>
           </div>
-          <div className="col-5">
+          <div className="xs-navbar-grid-item col-1 d-sm-none">
+            <RxHamburgerMenu onClick={() => setShowSideBar(!showSideBar)} />
+          </div>
+          <div className="col-5 d-none d-md-block">
             <div className="menu-nav d-flex justify-content-center gap-30">
               {categoryTags &&
                 categoryTags?.map((item, index) => {
                   return (
-                    <NavLink to={"/store?c="+item.categoryName} className="top-menu-link" index={index}>
+                    <NavLink
+                      to={"/store?c=" + item.categoryName}
+                      className="top-menu-link"
+                      index={index}
+                    >
                       {item.categoryName}
                       <div className="category-container hide">
                         <div className="d-flex flex-column">
@@ -153,7 +174,7 @@ const Header = () => {
                 })}
             </div>
           </div>
-          <div className="col-3">
+          <div className="col-6 col-sm-3 col-md-3">
             <div className="input-group">
               <Typeahead
                 id="pagination-example"
@@ -172,7 +193,7 @@ const Header = () => {
               </span>
             </div>
           </div>
-          <div className="col-3">
+          <div className="col-5 col-sm-3 col-md-3">
             <div className="header-upper-links d-flex align-items-center gap-30">
               {/* <div>
                   <Link
@@ -194,11 +215,12 @@ const Header = () => {
                   <LiaUserSolid className="fs-4" />
                   {authState?.user === null ? (
                     <p className="mb-0">
-                      Login <br /> 
+                      Login <br />
                     </p>
                   ) : (
-                    <p className="mb-0">My Account 
-                    {/* {authState?.user?.firstname} */}
+                    <p className="mb-0">
+                      Account
+                      {/* {authState?.user?.firstname} */}
                     </p>
                   )}
                   <div className="profile-container hide">
@@ -222,7 +244,6 @@ const Header = () => {
                   <p className="mb-0">Wishlist</p>
                 </Link>
               </div>
-
               <div>
                 <Link to="/cart" className="d-flex align-items-center gap-10">
                   {/* <img src="/images/cart.svg" alt="cart" /> */}
@@ -246,6 +267,55 @@ const Header = () => {
             </div>
           </div>
         </div>
+        {showSideBar && (
+          <div className="sidebar d-sm-none">
+            <p class="sidebar-shop-category-head">
+              SHOP BY CATEGORY
+              <span
+                className="sidebar-close-btn"
+                onClick={() => setShowSideBar(false)}
+              >
+                x
+              </span>
+            </p>
+            {categoryTags &&
+              categoryTags?.map((item, index) => {
+                return (
+                  <ul className="sidebar-list">
+                    <li>
+                      <NavLink
+                        to={"/store?c=" + item.categoryName}
+                        className="sidebar-main-category"
+                      >
+                        {" "}
+                        {item.categoryName}
+                        <span
+                          className="plus-minus float-right"
+                          onClick={(e) => handleAccordion(e, item.categoryName)}
+                        >
+                          +
+                        </span>
+                      </NavLink>
+                      <div
+                        id={`taglist-` + item.categoryName}
+                        className={`hidden-tag header-panel` + " "}
+                      >
+                        <ul>
+                          <li className="sidebar-category-tags">
+                            {item &&
+                              item.categoryTags?.map((tag, index) => {
+                                return <span>{tag}</span>;
+                              })}
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                );
+              })}
+          </div>
+        )}
+
         {/* </div> */}
       </header>
       {/* <header className="header-bottom py-3">

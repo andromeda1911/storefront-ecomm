@@ -70,9 +70,9 @@ export const createCustomerOrder = createAsyncThunk(
 
 export const getUserOrders = createAsyncThunk(
   "auth/cart/get-orders",
-  async (thunkAPI) => {
+  async (data,thunkAPI) => {
     try {
-      return await authService.getMyOrders();
+      return await authService.getMyOrders(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

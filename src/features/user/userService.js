@@ -77,8 +77,8 @@ const createOrder = async(orderDetail) => {
   } 
 }
 
-const getMyOrders = async() => {
-  const response = await axios.get(`${base_url}user/getmyorders`, config);
+const getMyOrders = async(data) => {
+  const response = await axios.get(`${base_url}user/getmyorders`, data);
   if(response.data){
       return response.data;
   }

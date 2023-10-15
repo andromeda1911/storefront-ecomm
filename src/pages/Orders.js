@@ -6,13 +6,27 @@ import { useEffect } from "react";
 import { getUserOrders } from "../features/user/userSlice";
 
 const Orders = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
+
   const dispatch = useDispatch();
   const orderState = useSelector(
     (state) => state.auth?.orderedProducts?.orders
   );
 
   useEffect(() => {
-    dispatch(getUserOrders());
+    dispatch(getUserOrders(config2));
   }, []);
   console.log(orderState);
   return (
