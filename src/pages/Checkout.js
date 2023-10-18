@@ -128,7 +128,7 @@ const Checkout = () => {
       // "http://localhost:5000/api/user/order/checkout",
       "https://storefront-app-402010.el.r.appspot.com/api/user/order/checkout",
       { amount: totalAmount + 29 },
-      config
+      config2
     );
     if (!result) {
       alert("Something went wrong");
