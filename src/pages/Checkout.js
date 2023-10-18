@@ -125,7 +125,8 @@ const Checkout = () => {
       return;
     }
     const result = await axios.post(
-      "http://localhost:5000/api/user/order/checkout",
+      // "http://localhost:5000/api/user/order/checkout",
+      "https://storefront-app-402010.el.r.appspot.com/api/user/order/checkout",
       { amount: totalAmount + 29 },
       config
     );
@@ -152,9 +153,10 @@ const Checkout = () => {
         };
 
         const result = await axios.post(
-          "http://localhost:5000/api/user/order/paymentVerification",
+          // "http://localhost:5000/api/user/order/paymentVerification",
+          "https://storefront-app-402010.el.r.appspot.com/api/user/order/paymentVerification",
           data,
-          config
+          config2
         );
 
         console.log("resulkt value", result.data.razorpayPaymentId);
@@ -198,7 +200,7 @@ const Checkout = () => {
     <>
       <Container class1="checkout-wrapper py-5 home-wrapper-2">
         <div className="row">
-          <div className="col-7">
+          <div className="col-12 col-md-7">
             <div className="checkout-left-data">
               <h3 className="website-name">Storefront</h3>
               <nav
@@ -369,10 +371,10 @@ const Checkout = () => {
                     <Link to="/cart" className="text-dark">
                       <BiArrowBack className="me-2" /> Return to Cart
                     </Link>
-                    <Link to="/cart" className="button">
+                    {/* <Link to="/cart" className="button">
                       Continue to Shipping
-                    </Link>
-                    <button className="button" type="submit">
+                    </Link> */}
+                    <button className="button mobile-place-order-btn" type="submit">
                       Place Order
                     </button>
                   </div>
@@ -380,7 +382,7 @@ const Checkout = () => {
               </form>
             </div>
           </div>
-          <div className="col-5">
+          <div className="col-12 col-md-5">
             <div className="border-bottom py-4">
               {cartState &&
                 cartState.map((item, index) => {
@@ -391,12 +393,12 @@ const Checkout = () => {
                     >
                       <div className="w-75 d-flex gap-10">
                         <div className="w-25 position-relative">
-                          <span
+                          {/* <span
                             style={{ top: "-10px", right: "2px" }}
                             className="badge bg-secondary text-white rounded-circle p-2 position-absolute"
                           >
                             {item?.quantity}
-                          </span>
+                          </span> */}
                           <img
                             width={100}
                             height={100}

@@ -172,13 +172,13 @@ const Home = () => {
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
                       <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 30) + "..."}</h5>
-                      <ReactStars
+                      {/* <ReactStars
                         count={5}
                         size={24}
                         value={item?.totalrating.toString()}
                         edit={false}
                         activeColor="#ffd700"
-                      />
+                      /> */}
                       {/* <p className="price">₹ {item?.price}</p> */}
                     </div>
                     <div className="action-bar position-absolute">
@@ -230,13 +230,13 @@ const Home = () => {
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
                       <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 30) + "..."}</h5>
-                      <ReactStars
+                      {/* <ReactStars
                         count={5}
                         size={24}
                         value={item?.totalrating.toString()}
                         edit={false}
                         activeColor="#ffd700"
-                      />
+                      /> */}
                       {/* <p className="price">₹ {item?.price}</p> */}
                     </div>
                     <div className="action-bar position-absolute">
@@ -318,13 +318,13 @@ const Home = () => {
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
                       <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 70) + "..."}</h5>
-                      <ReactStars
+                      {/* <ReactStars
                         count={5}
                         size={24}
                         value={item?.totalrating.toString()}
                         edit={false}
                         activeColor="#ffd700"
-                      />
+                      /> */}
                       {/* <p className="price">₹ {item?.price}</p> */}
                     </div>
                     <div className="action-bar position-absolute">
@@ -386,13 +386,13 @@ const Home = () => {
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
                       <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 40) + "..."}</h5>
-                      <ReactStars
+                      {/* <ReactStars
                         count={5}
                         size={24}
                         value={item?.totalrating.toString()}
                         edit={false}
                         activeColor="#ffd700"
-                      />
+                      /> */}
                       {/* <p className="price"> <strike>₹{item?.price + 199}</strike> ₹{item?.price}</p> */}
                     </div>
                     <div className="action-bar position-absolute">
@@ -445,13 +445,13 @@ const Home = () => {
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
                       <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 40) + "..."}</h5>
-                      <ReactStars
+                      {/* <ReactStars
                         count={5}
                         size={24}
                         value={item?.totalrating.toString()}
                         edit={false}
                         activeColor="#ffd700"
-                      />
+                      /> */}
                       {/* <p className="price"> <strike>₹{item?.price + 199}</strike> ₹{item?.price}</p> */}
                     </div>
                     <div className="action-bar position-absolute">
@@ -504,13 +504,13 @@ const Home = () => {
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
                       <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 30) + "..."}</h5>
-                      <ReactStars
+                      {/* <ReactStars
                         count={5}
                         size={24}
                         value={item?.totalrating.toString()}
                         edit={false}
                         activeColor="#ffd700"
-                      />
+                      /> */}
                       {/* <p className="price"> <strike>₹{item?.price + 199}</strike> ₹{item?.price}</p> */}
                     </div>
                     <div className="action-bar position-absolute">

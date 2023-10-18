@@ -228,6 +228,9 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.addToWishlist = action.payload;
         state.message = "Product added to wishlist";
+        if(state.isSuccess) {
+          toast.success("Product added to wishlist");
+        }
       })
       .addCase(addToWishlist.rejected, (state, action) => {
         state.isLoading = false;

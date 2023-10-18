@@ -44,6 +44,7 @@ const OurStore = () => {
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [sort, setSort] = useState(null);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   useEffect(() => {
     let newBrands = [];
@@ -63,7 +64,9 @@ const OurStore = () => {
   }, [productState]);
 
   useEffect(() => {
-    selectedMenuItem.includes('c') ? setCategory(selectedSubMenuItem) : setTag(selectedSubMenuItem);
+    selectedMenuItem.includes("c")
+      ? setCategory(selectedSubMenuItem)
+      : setTag(selectedSubMenuItem);
     // if (selectedTag !== undefined) {
     //   setTag(selectedTag);
     // }
@@ -81,7 +84,7 @@ const OurStore = () => {
       <BreadCrumb title="Our Store" />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
-          <div className="col-3">
+          <div className="d-none d-md-block col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
               <div>
@@ -202,9 +205,11 @@ const OurStore = () => {
                           className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
                         >
                           {item}
-                          {
-                            selectedProductTag && <span className="position-absolute deselect-filter">x</span>
-                          }
+                          {selectedProductTag && (
+                            <span className="position-absolute deselect-filter">
+                              x
+                            </span>
+                          )}
                         </span>
                       );
                     })}
@@ -231,13 +236,16 @@ const OurStore = () => {
                               ? setSelectedBrand(false)
                               : setSelectedBrand(true);
                           }}
-                          className={"text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"}
+                          className={
+                            "text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
+                          }
                         >
                           {item}
-                          {
-                            selectedBrand && <span className="position-absolute deselect-filter">x</span>
-                          }
-                          
+                          {selectedBrand && (
+                            <span className="position-absolute deselect-filter">
+                              x
+                            </span>
+                          )}
                         </span>
                       );
                     })}
@@ -245,7 +253,7 @@ const OurStore = () => {
               </div>
             </div>
           </div>
-          <div className="col-9">
+          <div className="col-12 col-md-9">
             <div className="filter-cort-grid mb-3">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center gap-10">
@@ -268,8 +276,8 @@ const OurStore = () => {
                   </select>
                 </div>
                 <div className="d-flex align-item-center gap-10">
-                  <p className="totalproducts mb-0">21 products</p>
-                  <div className="d-flex gap-10 align-items-center grid">
+                  {/* <p className="totalproducts mb-0">21 products</p> */}
+                  <div className="d-flex gap-10 align-items-center grid d-none d-md-flex">
                     <img
                       onClick={() => {
                         setGrid(3);
@@ -308,8 +316,189 @@ const OurStore = () => {
                 <div></div>
               </div>
             </div>
+            
+            
             <div className="products-list pb-5">
-              <div className="d-flex gap-10 flex-wrap">
+              <div className="d-flex gap-10 flex-wrap  gap-mobile-0">
+                <div className="mobile-filters py-3 d-md-none">
+                  <div className="mobile-filter-container">
+                    <span onClick={() => setShowMobileFilters(!showMobileFilters)}>FILTERS</span>
+                    {
+              showMobileFilters && 
+              <div className="mobile-filters-body">
+                <div className="col-12">
+            <div className="filter-card">
+              <h3 className="filter-title">Shop By Categories</h3>
+              <div>
+                <ul className="ps-0">
+                  {categories &&
+                    [...new Set(categories)].map((item, index) => {
+                      return (
+                        <li
+                          key={index}
+                          className="cursor-pointer"
+                          onClick={() => setCategory(item)}
+                        >
+                          {item}
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
+            </div>
+            <div className="filter-card">
+              <h3 className="filter-title">Filter By</h3>
+              <div>
+                {/* <h5 className="sub-title">Availability</h5>
+                <div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      value=""
+                      id=""
+                    />
+                    <label className="form-check-label" htmlFor="">
+                      In Stock (1)
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      value=""
+                      id=""
+                      defaultChecked
+                    />
+                    <label className="form-check-label" htmlFor="">
+                      Out of Stock (0)
+                    </label>
+                  </div>
+                </div> */}
+                <h5 className="sub-title">Price</h5>
+                <div className="d-flex align-items-center gap-10">
+                  <div className="form-floating">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="floatingInput"
+                      placeholder="From"
+                      onChange={(e) => setMinPrice(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">From</label>
+                  </div>
+                  <div className="form-floating">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="floatingInput"
+                      placeholder="To"
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">To</label>
+                  </div>
+                </div>
+                {/* <h5 className="sub-title">Colors</h5>
+                <div className="d-flex flex-wrap">
+                  <Color />
+                </div> */}
+                <h5 className="sub-title">Size</h5>
+                <div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      value=""
+                      id="color-1"
+                    />
+                    <label className="form-check-label" htmlFor="color-1">
+                      S (2)
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      value=""
+                      id="color-2"
+                    />
+                    <label className="form-check-label" htmlFor="color-2">
+                      M (2)
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="filter-card">
+              <h3 className="filter-title">Product Tags</h3>
+              <div>
+                <div className="product-tags d-flex flex-wrap align-items-center gap-10">
+                  {tags &&
+                    [...new Set(tags)].map((item, index) => {
+                      return (
+                        <span
+                          key={index}
+                          onClick={() => {
+                            selectedProductTag ? setTag([]) : setTag(item);
+                            selectedProductTag
+                              ? setSelectedProductTag(false)
+                              : setSelectedProductTag(true);
+                          }}
+                          className="text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
+                        >
+                          {item}
+                          {selectedProductTag && (
+                            <span className="position-absolute deselect-filter">
+                              x
+                            </span>
+                          )}
+                        </span>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+            <div className="filter-card">
+              <h3 className="filter-title">Product Brands</h3>
+              <div>
+                <div className="product-tags d-flex flex-wrap align-items-center gap-10">
+                  {brands &&
+                    [...new Set(brands)].map((item, index) => {
+                      return (
+                        <span
+                          key={index}
+                          onClick={() => {
+                            console.log(
+                              "is brand selected==========",
+                              selectedBrand
+                            );
+
+                            selectedBrand ? setBrand([]) : setBrand(item);
+                            selectedBrand
+                              ? setSelectedBrand(false)
+                              : setSelectedBrand(true);
+                          }}
+                          className={
+                            "text-capitalize badge bg-light text-secondary rounded-3 py-2 px-3 cursor-pointer position-relative"
+                          }
+                        >
+                          {item}
+                          {selectedBrand && (
+                            <span className="position-absolute deselect-filter">
+                              x
+                            </span>
+                          )}
+                        </span>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+          </div>
+              </div>
+            }
+                  </div>
+                </div>
                 <ProductCard
                   data={productState ? productState : []}
                   grid={grid}

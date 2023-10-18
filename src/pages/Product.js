@@ -130,7 +130,7 @@ const config2 = {
       <BreadCrumb title={productState?.title} />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
-          <div className="col-6">
+          <div className="col-12 col-md-6">
             <div className="main-product-image">
               <div>
                 <ReactImageZoom {...props} />
@@ -146,7 +146,7 @@ const config2 = {
               })}
             </div>
           </div>
-          <div className="col-6">
+          <div className="col-12 col-md-6">
             <div className="main-product-details">
               <div className="border-bottom">
                 <h3 className="title">{productState?.title}</h3>
@@ -232,11 +232,13 @@ const config2 = {
                       </div>
                     </>
                   )}
-                  <div
+                  
+                </div>
+                <div
                     className={
                       alreadyAdded
-                        ? "ms-0"
-                        : "ms5 " + "d-flex align-items-center gap-10 ms-5"
+                        ? "d-flex gap-10 ms-0"
+                        : "ms5 " + "d-flex align-items-center gap-10"
                     }
                   >
                     <button
@@ -248,17 +250,16 @@ const config2 = {
                       {alreadyAdded ? "Go to Cart" : "Add to Cart"}
                     </button>
                     <Link to="/signup" className="button signup">
-                      Buy It Now
+                      Buy Now
                     </Link>
                   </div>
-                </div>
-                <div className="d-flex align-items-center gap-15">
-                  <div>
+                <div className="d-flex align-items-center gap-15 mt-2">
+                  {/* <div>
                     <a href="">
                       <TbGitCompare className="fs-5 me-2" />
                       Add to Compare
                     </a>
-                  </div>
+                  </div> */}
                   <div>
                     <a href="">
                       <AiOutlineHeart className="fs-5 me-2" />
@@ -321,13 +322,7 @@ const config2 = {
                     <p className="mb-0">Based on 2 reviews</p>
                   </div>
                 </div>
-                {orderedProduct && (
-                  <div>
-                    <a className="text-dark text-decoration-underline" href="">
-                      Write a Review
-                    </a>
-                  </div>
-                )}
+
               </div>
               <div className="review-form py-4">
                 <h4 className="mb-2">Write a Review</h4>
