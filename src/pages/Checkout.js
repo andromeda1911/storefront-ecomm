@@ -173,9 +173,10 @@ const Checkout = () => {
             orderItems: cartProductState,
             paymentInfo: result.data,
             shippingInfo:JSON.parse(localStorage.getItem("address")),
+            config2: config2
           })
         );
-        dispatch(emptyUserCart())
+        dispatch(emptyUserCart(config2))
         localStorage.removeItem("address");
         dispatch(resetState())
       },

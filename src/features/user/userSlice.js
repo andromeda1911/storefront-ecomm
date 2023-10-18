@@ -103,9 +103,9 @@ export const deleteCartItem = createAsyncThunk(
 
 export const emptyUserCart = createAsyncThunk(
   "auth/cart/empty",
-  async (thunkAPI) => {
+  async (config2,thunkAPI) => {
     try {
-      return await authService.emptyCart();
+      return await authService.emptyCart(config2);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

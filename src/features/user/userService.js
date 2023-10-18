@@ -56,8 +56,8 @@ const removeProductFromCart = async(data) => {
   } 
 }
 
-const emptyCart = async() => {
-  const response = await axios.delete(`${base_url}user/empty-cart`, config);
+const emptyCart = async(config2) => {
+  const response = await axios.delete(`${base_url}user/empty-cart`, config2);
   if(response.data){
       return response.data;
   } 
@@ -71,7 +71,7 @@ const updateProductFromCart = async(cartDetails) => {
 }
 
 const createOrder = async(orderDetail) => {
-  const response = await axios.post(`${base_url}user/cart/create-order`,orderDetail, config);
+  const response = await axios.post(`${base_url}user/cart/create-order`,orderDetail, orderDetail.config2);
   if(response.data){
       return response.data;
   } 
