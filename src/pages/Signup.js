@@ -38,9 +38,9 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    if(authState.createdUser !== null && authState.isError === false) {
-      navigate('/login');
-    }
+      if(authState.createdUser !== undefined && authState.isError === false) {
+        navigate('/login');
+      }
   }, [authState]);
 
   return (
