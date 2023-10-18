@@ -223,7 +223,9 @@ const Header = () => {
                       {/* {authState?.user?.firstname} */}
                     </p>
                   )}
-                  <div className="profile-container hide">
+                  {
+                    authState?.user && 
+                    <div className="profile-container hide">
                     <div className="d-flex flex-column">
                       <NavLink to="/my-orders">My Orders</NavLink>
                       <NavLink to="/wishlist">Wishlist</NavLink>
@@ -232,6 +234,8 @@ const Header = () => {
                       <NavLink onClick={() => handleLogout()}>Logout</NavLink>
                     </div>
                   </div>
+                  }
+                  
                 </Link>
               </div>
               <div>
