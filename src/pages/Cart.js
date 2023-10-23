@@ -40,6 +40,7 @@ const Cart = () => {
         updateCartItem({
           cartItemId: productUpdateDetail?.cartItemId,
           quantity: Number(productUpdateDetail?.quantity),
+          config2: config2
         })
       );
       setTimeout(() => {
@@ -68,7 +69,8 @@ const Cart = () => {
       <Meta title={"Cart"}></Meta>
       <BreadCrumb title="Cart" />
       <Container class1="cart-wrapper home-wrapper-2 py-5">
-        <div className="row">
+        { cartState?.length != 0 && 
+          <div className="row">
           <div className="col-12">
             <div className="cart-header py-3 d-flex justify-content-between align-items-center">
               <h4 className="cart-col-1">Product</h4>
@@ -161,6 +163,11 @@ const Cart = () => {
             </div>
           </div>
         </div>
+        }
+        {
+          (cartState?.length == 0 || cartState === undefined) && 
+          <div className="fs-3 text-center py-5">Your cart is empty!</div>
+        }
       </Container>
     </>
   );

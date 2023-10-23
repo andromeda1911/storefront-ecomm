@@ -17,19 +17,21 @@ const login = async (userData) => {
   }
 };
 
-const addToWishlist = async (prodId) => {
+const addToWishlist = async (data) => {
+  console.log('wishlistdata', data);
+  const prodId = data.id;
     const response = await axios.put(
       `${base_url}user/wishlist`,
       {prodId},
-      config
+      data.config2
     );
     if (response.data) {
       return response.data;
     }
   };
 
-const getUserWishlist = async() => {
-    const response = await axios.get(`${base_url}user/wishlist`, config);
+const getUserWishlist = async(config2) => {
+    const response = await axios.get(`${base_url}user/wishlist`, config2);
     if(response.data){
         return response.data;
     }
@@ -64,7 +66,7 @@ const emptyCart = async(config2) => {
 }
 
 const updateProductFromCart = async(cartDetails) => {
-  const response = await axios.put(`${base_url}user/update-product-cart/${cartDetails.cartItemId}/${cartDetails.quantity}`,{}, config);
+  const response = await axios.put(`${base_url}user/update-product-cart/${cartDetails.cartItemId}/${cartDetails.quantity}`,{}, cartDetails.config2);
   if(response.data){
       return response.data;
   } 

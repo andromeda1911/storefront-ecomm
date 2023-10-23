@@ -114,7 +114,7 @@ const Checkout = () => {
       });
     }
     setcartProductState(items);
-  }, []);
+  }, [cartState]);
 
   const checkoutHandler = async () => {
     const response = await loadScript(

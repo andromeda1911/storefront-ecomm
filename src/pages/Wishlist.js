@@ -7,18 +7,31 @@ import { addToWishlist, getUserProductWishlist } from "../features/user/userSlic
 import { useNavigate } from "react-router-dom";
 
 const Wishlist = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     getWishlistItems();
   }, []);
   const getWishlistItems = () => {
-    dispatch(getUserProductWishlist());
+    dispatch(getUserProductWishlist(config2));
   };
   const removeFromWishlist = (id) => {
-    dispatch(addToWishlist(id));
+    dispatch(addToWishlist({id:id, config2: config2}));
     setTimeout(() => {
-      dispatch(getUserProductWishlist());
+      dispatch(getUserProductWishlist(config2));
     }, 300);
   };
   const wishlistState = useSelector((state) => state.auth);
@@ -37,7 +50,7 @@ const Wishlist = () => {
           {wishlistState?.user?.wishlist?.length === 0 && <div className="fs-3">Your wishlist is empty!</div> }
           {wishlistState?.user?.wishlist?.map((item, index) => {
             return (
-              <div className="col-3" key={index}>
+              <div className="col-6 col-md-3" key={index}>
                 <div
                   className="wishlist-card bg-white position-relative
               "

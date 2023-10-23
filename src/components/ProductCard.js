@@ -9,15 +9,48 @@ import watch2 from "../images/watch2.jpg";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist } from "../features/user/userSlice";
+import { addProdToCart, addToWishlist } from "../features/user/userSlice";
 
 const ProductCard = (props) => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
   const { grid, data } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let location = useLocation();
+  const userState = useSelector((state) => state.auth?.user);
+
   const addToWish = (id) => {
-    dispatch(addToWishlist(id));
+    console.log('userstate', userState);
+    if(userState !== null) {
+      dispatch(addToWishlist({id:id, config2: config2}));
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const uploadCart = (product) => {
+      console.log('product', product);
+      dispatch(
+        addProdToCart({
+          productId: product?.productId,
+          quantity: 1,
+          price: product?.price,
+          config2: config2
+        })
+      );
+    // }
   };
 
   return (
@@ -67,18 +100,8 @@ const ProductCard = (props) => {
                 ></p>
                 <p className="price">₹ {item?.price}</p>
               </div>
-              <div className="action-bar position-absolute">
-                {/* <div className="d-flex flex-column gap-15">
-                  <Link to={'/product/'+item?._id} className="border-0 bg-transparent">
-                    <img src={view} alt="view" />
-                  </Link>
-                  <button className="border-0 bg-transparent">
-                    <img src={prodcompare} alt="prodcompare" />
-                  </button>
-                  <button className="border-0 bg-transparent">
-                    <img src={addcart} alt="addcart" />
-                  </button>
-                </div> */}
+              <div className="add-to-cart text-center">
+                  <button className="button" onClick={() => uploadCart({productId: item._id, price: item.price})}>Add to Cart</button>
               </div>
             </div>
           </div>

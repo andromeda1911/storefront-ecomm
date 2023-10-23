@@ -75,6 +75,7 @@ const Header = () => {
       });
     }
     setcategoryTags(navMenuItems);
+    console.log('navmenuitems==========', navMenuItems);
   }, [allProducts, productCategories]);
 
   useEffect(() => {
@@ -113,6 +114,7 @@ const Header = () => {
     localStorage.clear();
     window.location.reload();
   };
+
   return (
     <>
       {/* <header className="header-top-strip py-3">
@@ -159,6 +161,7 @@ const Header = () => {
                       index={index}
                     >
                       {item.categoryName}
+                      {/* <div className="backdrop hide"> */}
                       <div className="category-container hide">
                         <div className="d-flex flex-column">
                           {item &&
@@ -169,6 +172,8 @@ const Header = () => {
                             })}
                         </div>
                       </div>
+                      {/* </div> */}
+                      
                     </NavLink>
                   );
                 })}
@@ -272,8 +277,8 @@ const Header = () => {
           </div>
         </div>
         {showSideBar && (
-          <div className="sidebar d-sm-none">
-            <p class="sidebar-shop-category-head">
+          <div id="mobileSideBar" className="sidebar d-sm-none">
+            <p class="sidebar-shop-category-head text-center">
               SHOP BY CATEGORY
               <span
                 className="sidebar-close-btn"

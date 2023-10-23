@@ -23,6 +23,19 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 
 const Home = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;
+
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
   const dispatch = useDispatch();
   const blogState = useSelector((state) => state?.blog?.blog);
   const productState = useSelector((state) => state?.product?.product);
@@ -39,7 +52,7 @@ const Home = () => {
     dispatch(getAllproducts({sort:null,tag:[],brand:[],category:[],minPrice:null,maxPrice:null}));
   };
   const addToWish = (id) => {
-    dispatch(addToWishlist(id));
+    dispatch(addToWishlist({id:id, config2: config2}));
   };
   return (
     <>

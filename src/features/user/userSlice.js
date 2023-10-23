@@ -26,9 +26,9 @@ export const loginUser = createAsyncThunk(
 
 export const addToWishlist = createAsyncThunk(
   "auth/addtowishlist",
-  async (prodId, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return authService.addToWishlist(prodId);
+      return authService.addToWishlist(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -37,9 +37,9 @@ export const addToWishlist = createAsyncThunk(
 
 export const getUserProductWishlist = createAsyncThunk(
   "auth/wishlist",
-  async (thunkAPI) => {
+  async (config2,thunkAPI) => {
     try {
-      return await authService.getUserWishlist();
+      return await authService.getUserWishlist(config2);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -271,6 +271,9 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+        if(state.isError) {
+          toast.error("Please login");
+        }
       })
       .addCase(getUserCart.pending, (state) => {
         state.isLoading = true;

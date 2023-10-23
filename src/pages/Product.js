@@ -88,10 +88,10 @@ const config2 = {
   };
 
   const uploadCart = () => {
-    if (color === null) {
-      toast.error("Please choose a color");
-      return false;
-    } else {
+    // if (color === null) {
+    //   toast.error("Please choose a color");
+    //   return false;
+    // } else {
       dispatch(
         addProdToCart({
           productId: productState?._id,
@@ -101,7 +101,7 @@ const config2 = {
           config2: config2
         })
       );
-    }
+    // }
   };
 
   const props = {
@@ -188,10 +188,21 @@ const config2 = {
                   <h3 className="product-heading">Availability :</h3>{" "}
                   <p className="product-data">In Stock</p>
                 </div>
-                <div className="d-flex gap-10 flex-column mt-2 mb-3">
+                {
+                  productState?.size.length !== 0 && 
+                  <div className="d-flex gap-10 flex-column mt-2 mb-3">
                   <h3 className="product-heading">Size :</h3>{" "}
                   <div className="d-flex flex-wrap gap-15">
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
+                    {
+                      productState?.size.map((item, index) => {
+                        return(
+<span className="badge border border-1 bg-white text-dark border-secondary">
+                      {item.title}
+                        </span>
+                        )
+                      })
+                    }
+                    {/* <span className="badge border border-1 bg-white text-dark border-secondary">
                       S
                     </span>
                     <span className="badge border border-1 bg-white text-dark border-secondary">
@@ -199,9 +210,11 @@ const config2 = {
                     </span>
                     <span className="badge border border-1 bg-white text-dark border-secondary">
                       L
-                    </span>
+                    </span> */}
                   </div>
                 </div>
+                }
+                
                 {alreadyAdded === false && (
                   <>
                     <div className="d-flex gap-10 flex-column mt-2 mb-3">
