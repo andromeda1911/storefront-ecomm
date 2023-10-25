@@ -21,6 +21,7 @@ import view from "../images/view.svg";
 import prodcompare from "../images/prodcompare.svg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import { getHomeImages } from "../features/home/homeSlice";
 
 const Home = () => {
   const getTokenFromLocalStorage = localStorage.getItem("customer")
@@ -39,9 +40,11 @@ const config2 = {
   const dispatch = useDispatch();
   const blogState = useSelector((state) => state?.blog?.blog);
   const productState = useSelector((state) => state?.product?.product);
+  const homeState = useSelector((state) => state?.home);
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(getHomeImages());
     getBlogs();
     getProducts();
   }, []);
@@ -58,90 +61,9 @@ const config2 = {
     <>
       {/* <Container class1="home-wrapper-1 py-5"> */}
         <div className="row">
-          {/* <div className="col-6">
-            <div className="main-banner p-3 position-relative">
-              <img
-                src="images/main-banner-1.jpg"
-                className="img-fluid rounded-3"
-                alt="main banner"
-              />
-              <div className="main-banner-content position-absolute">
-                <h4>SUPERCHARGED FOR PROS.</h4>
-                <h5>iPhone 15 Pro</h5>
-                <p>From ₹7999 or ₹399/mo</p>
-                <Link className="button">BUY NOW</Link>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
-              <div className="small-banner p-3 position-relative">
-                <img
-                  src="images/catbanner-01.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>SUPERCHARGED FOR PROS.</h4>
-                  <h5>iPhone 15 Pro</h5>
-                  <p>
-                    From ₹7999 <br /> or ₹399/mo
-                  </p>
-                </div>
-              </div>
-              <div className="small-banner p-3 position-relative">
-                <img
-                  src="images/catbanner-02.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>NEW ARRIVAL</h4>
-                  <h5>Buy Apple Watch</h5>
-                  <p>
-                    From ₹12999 <br /> or ₹899/mo
-                  </p>
-                </div>
-              </div>
-              <div className="small-banner p-3 position-relative">
-                <img
-                  src="images/catbanner-03.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>NEW ARRIVAL</h4>
-                  <h5>Buy Apple Watch</h5>
-                  <p>
-                    From ₹12999 <br /> or ₹899/mo
-                  </p>
-                </div>
-              </div>
-              <div className="small-banner p-3 position-relative">
-                <img
-                  src="images/catbanner-04.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>NEW ARRIVAL</h4>
-                  <h5>Buy Apple Watch</h5>
-                  <p>
-                    From ₹12999 <br /> or ₹899/mo
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> */}
-           <Carousel showArrows={false} swipeable={true} showThumbs={false} autoPlay={true} infiniteLoop={true}>
+           <Carousel showArrows={false} swipeable={true} showIndicators={false} showThumbs={false} autoPlay={true} infiniteLoop={true}>
                 <div>
-                    <img src="images/banner1.jpg" />
-                </div>
-                <div>
-                    <img src="images/banner2.jpg" />
-                </div>
-                <div>
-                    <img src="images/banner3.jpg" />
+                    <img src={homeState?.homeImages[0]?.url}/>
                 </div>
             </Carousel>
         </div>
@@ -205,6 +127,13 @@ const config2 = {
             })}
         </div>
       </Container>
+      <div className="row">
+           <Carousel showArrows={false} showIndicators={false} swipeable={true} showThumbs={false} autoPlay={true} infiniteLoop={true}>
+                <div>
+                    <img src={homeState?.homeImages[1]?.url}/>
+                </div>
+            </Carousel>
+        </div>
       <Container class1="special-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
@@ -419,6 +348,13 @@ const config2 = {
             })}
         </div>
       </Container>
+      <div className="row">
+           <Carousel showArrows={false} showIndicators={false} swipeable={true} showThumbs={false} autoPlay={true} infiniteLoop={true}>
+                <div>
+                    <img src={homeState?.homeImages[2]?.url}/>
+                </div>
+            </Carousel>
+        </div>
       <Container class1="popular-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">

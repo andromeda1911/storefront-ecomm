@@ -4,6 +4,7 @@ import productReducer from "../features/products/productSlice"
 import blogReducer from "../features/blogs/blogSlice"
 import contactReducer from "../features/contact/contactSlice"
 import pCategoryReducer from "../features/pcategory/pcategorySlice";
+import homeReducer from "../features/home/homeSlice";
 import productTagReducer from "../features/tags/productTagSlice";
 import brandReducer from "../features/brand/brandSlice";
 
@@ -16,5 +17,6 @@ export const store = configureStore({
     pCategory: pCategoryReducer,
     productTag: productTagReducer,
     brand: brandReducer,
+    home: homeReducer
   },
 });
