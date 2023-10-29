@@ -198,8 +198,7 @@ a {
   z-index: 1000;
   background-color: white;
   width: 200px;
-  left: 70%;
-  right: -10%;
+  left: 85%;
   top: 8%;
 }
 
@@ -1019,11 +1018,16 @@ form .error {
   }
   .sidebar-list .sidebar-main-category{
     width: 100%;
+    /* color: #4a4f6a;
+    text-transform: capitalize; */
+  }
+  .sidebar-main-category a{
     color: #4a4f6a;
     text-transform: capitalize;
   }
   .sidebar-list .plus-minus{
     float: right;
+    color: #4a4f6a;
     margin-right: 10px;
   }
   .sidebar-list .sidebar-category-tags{
@@ -1076,5 +1080,8 @@ form .error {
     position: fixed;
     bottom: 0;
     width: 100%;
+  }
+  .profile-container {
+    left: 47%;
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { LuLogOut } from "react-icons/lu";
@@ -12,6 +12,7 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import {
   getAllproductsWithoutFilter,
   getDetails,
+  getSearchResults,
 } from "../features/products/productSlice";
 import { getUserCart } from "../features/user/userSlice";
 import { getCategories } from "../features/pcategory/pcategorySlice";
@@ -20,6 +21,7 @@ import { all } from "axios";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const authState = useSelector((state) => state.auth);
   const cartState = useSelector((state) => state?.auth?.cartProducts);
   const productState = useSelector((state) => state?.product?.product);
@@ -27,12 +29,15 @@ const Header = () => {
   const productCategories = useSelector(
     (state) => state?.pCategory?.categories
   );
+  const searchResultsState = useSelector((state) => state?.product?.searchResults);
+
   const [categoryTags, setcategoryTags] = useState([]);
   const [total, setTotal] = useState(null);
   const [paginate, setPaginate] = useState(true);
   const [productOpt, setProductOpt] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [showSideBar, setShowSideBar] = useState(false);
+  const [searchString, setSearchString] = useState('');
   const getTokenFromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))
     : null;
@@ -90,6 +95,12 @@ const Header = () => {
   }, [cartState]);
 
   useEffect(() => {
+    if(searchResultsState?.length > 0) {
+      navigate('/search',{state: searchResultsState});
+    }
+  }, [searchResultsState]);
+
+  useEffect(() => {
     let data = [];
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
@@ -100,7 +111,6 @@ const Header = () => {
 
   const handleAccordion = (event, category) => {
     const tagList = document.getElementById("taglist-" + category);
-    console.log('e===========', event);
     if (tagList.classList.contains("show-tag")) {
       tagList.classList.remove("show-tag");
       event.target.textContent = '+'
@@ -114,6 +124,10 @@ const Header = () => {
     localStorage.clear();
     window.location.reload();
   };
+
+  const getSearchResult = (query) => {
+    dispatch(getSearchResults({searchString: query}));
+  }
 
   return (
     <>
@@ -155,8 +169,8 @@ const Header = () => {
               {categoryTags &&
                 categoryTags?.map((item, index) => {
                   return (
-                    <NavLink
-                      to={"/store?c=" + item.categoryName}
+                    <a
+                      href={"/store?c=" + item.categoryName}
                       className="top-menu-link"
                       index={index}
                     >
@@ -167,14 +181,14 @@ const Header = () => {
                           {item &&
                             item.categoryTags?.map((tag, index) => {
                               return (
-                                <NavLink to={"/store?q=" + tag}>{tag}</NavLink>
+                                <a href={"/store?q=" + tag}>{tag}</a>
                               );
                             })}
                         </div>
                       </div>
                       {/* </div> */}
                       
-                    </NavLink>
+                    </a>
                   );
                 })}
             </div>
@@ -190,11 +204,17 @@ const Header = () => {
                 options={productOpt}
                 paginate={paginate}
                 labelKey={"name"}
+                onKeyDown={(selected) => {
+                  setSearchString(selected.currentTarget.value + selected.key);
+                  if(selected.code === 'Enter') {
+                    getSearchResult(searchString);
+                  }
+                }}
                 minLength={2}
                 placeholder="Search for products here"
               />
               <span className="input-group-text p-3" id="addon-wrapping">
-                <BsSearch className="fs-6" />
+                <BsSearch className="fs-6" onClick={() => getSearchResult(searchString)} />
               </span>
             </div>
           </div>
@@ -292,19 +312,19 @@ const Header = () => {
                 return (
                   <ul className="sidebar-list">
                     <li>
-                      <NavLink
-                        to={"/store?c=" + item.categoryName}
+                      <a
                         className="sidebar-main-category"
                       >
+                        <a href={"/store?c=" + item.categoryName}>{item.categoryName}</a>
                         {" "}
-                        {item.categoryName}
+                        
                         <span
                           className="plus-minus float-right"
                           onClick={(e) => handleAccordion(e, item.categoryName)}
                         >
                           +
                         </span>
-                      </NavLink>
+                      </a>
                       <div
                         id={`taglist-` + item.categoryName}
                         className={`hidden-tag header-panel` + " "}
@@ -313,7 +333,7 @@ const Header = () => {
                           <li className="sidebar-category-tags">
                             {item &&
                               item.categoryTags?.map((tag, index) => {
-                                return <span>{tag}</span>;
+                                return <a href={"/store?q=" + tag}>{tag}</a>;
                               })}
                           </li>
                         </ul>

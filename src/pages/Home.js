@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Marquee from "react-fast-marquee";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BlogCard from "../components/BlogCard";
-import ProductCard from "../components/ProductCard";
-import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import { services } from "../utils/Data";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../features/blogs/blogSlice";
 import wish from "../images/wish.svg";
-import wishlist from "../images/wishlist.svg";
-import watch from "../images/watch.jpg";
-import watch2 from "../images/watch2.jpg";
-import addcart from "../images/add-cart.svg";
-import ReactStars from "react-rating-stars-component";
 import moment from "moment";
 import { getAllproducts } from "../features/products/productSlice";
 import { addToWishlist } from "../features/user/userSlice";
-import view from "../images/view.svg";
-import prodcompare from "../images/prodcompare.svg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { getHomeImages } from "../features/home/homeSlice";
+import Loader from "../components/Loader";
+
 
 const Home = () => {
   const getTokenFromLocalStorage = localStorage.getItem("customer")
@@ -59,6 +51,7 @@ const config2 = {
   };
   return (
     <>
+     <Loader data={productState ? false : true} />
       {/* <Container class1="home-wrapper-1 py-5"> */}
         <div className="row">
            <Carousel showArrows={false} swipeable={true} showIndicators={false} showThumbs={false} autoPlay={true} infiniteLoop={true}>
@@ -492,179 +485,6 @@ const config2 = {
           </div>
         </div>
       </Container>
-      {/* <Container class1="home-wrapper-2 py-5">
-        <div className="row">
-          <div className="col-12">
-            <div className="categories d-flex flex-wrap justify-content-between align-items-center">
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Cameras</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Smart Tv</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Watch</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/tv.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Headphones</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/headphone.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Cameras</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Smart Tv</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/camera.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Watch</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/tv.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Headphones</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/headphone.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Headphones</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/headphone.jpg" alt="camera" />
-              </div>
-              <div className="d-flex gap-30 align-items-center">
-                <div>
-                  <h6>Headphones</h6>
-                  <p>10 items</p>
-                </div>
-                <img src="images/headphone.jpg" alt="camera" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container> */}
-      {/* <Container class1="marquee-wrapper py-5">
-        <div className="row">
-          <div className="col-12">
-            <div className="marquee-inner-wrapper bg-white p-3">
-              <Marquee className="d-flex">
-                <div className="mx-4 w-25">
-                  <img src="images/brand-01.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-02.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-03.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-04.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-05.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-06.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-07.png" alt="brand" />
-                </div>
-                <div className="mx-4 w-25">
-                  <img src="images/brand-08.png" alt="brand" />
-                </div>
-              </Marquee>
-            </div>
-          </div>
-        </div>
-      </Container> */}
-      
-      {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-3">
-            <div className="famous-card position-relative">
-              <img
-                src="images/famous_pic2.jpg"
-                className="img-fluid"
-                alt="famous products"
-              />
-              <div className="famous-content position-absolute">
-                <h5>Big Screen</h5>
-                <h6>Smart Watch</h6>
-                <p>From ₹999 or ₹99.99/mo for 14 mo.*</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-3">
-            <div className="famous-card position-relative">
-              <img
-                src="images/famous_pic4.jpg"
-                className="img-fluid"
-                alt="famous products"
-              />
-              <div className="famous-content position-absolute">
-                <h5>Apple Watch 3</h5>
-                <h6>Smart Watch</h6>
-                <p>From ₹999 or ₹99.99/mo for 14 mo.*</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-3">
-            <div className="famous-card position-relative">
-              <img
-                src="images/famous_pic5.webp"
-                className="img-fluid"
-                alt="famous products"
-              />
-              <div className="famous-content position-absolute">
-                <h5>Big Screen</h5>
-                <h6>Smart Watch</h6>
-                <p>From ₹999 or ₹99.99/mo for 14 mo.*</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-3">
-            <div className="famous-card position-relative">
-              <img
-                src="images/famous_pic2.jpg"
-                className="img-fluid"
-                alt="famous products"
-              />
-              <div className="famous-content position-absolute">
-                <h5>Studio Grade</h5>
-                <h6>600 nits of brightness.</h6>
-                <p>From ₹799 or ₹79.99/mo for 14 mo.*</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container> */}
       
       <Container class1="blog-wrapper py-5 home-wrapper-2">
         <div className="row">

@@ -12,6 +12,7 @@ import {
   updateCartItem,
 } from "../features/user/userSlice";
 import { useEffect } from "react";
+import Loader from "../components/Loader";
 
 const Cart = () => {
   const getTokenFromLocalStorage = localStorage.getItem("customer")
@@ -69,6 +70,7 @@ const Cart = () => {
       <Meta title={"Cart"}></Meta>
       <BreadCrumb title="Cart" />
       <Container class1="cart-wrapper home-wrapper-2 py-5">
+      <Loader data={cartState ? false : true} />
         { cartState?.length != 0 && 
           <div className="row">
           <div className="col-12">

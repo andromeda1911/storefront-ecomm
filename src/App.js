@@ -25,6 +25,7 @@ import { PrivateRoutes } from "./routing/PrivateRoutes";
 import { OpenRoutes } from "./routing/OpenRoutes";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
+import SearchResult from "./pages/SearchResult";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="store" element={<OurStore />} />
+            <Route path="search" element={<SearchResult />} />
             <Route path="product/:id" element={<Product />} />
             <Route path="blog" element={<Blog />} />
             <Route path="blog/:id" element={<SingleBlog />} />

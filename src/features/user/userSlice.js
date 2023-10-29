@@ -367,6 +367,9 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+        if(action.payload.response.data.message === 'Not authorized, token expired. Please login again') {
+          toast.error("Please login again")
+        }
       })
       .addCase(updateUserDetails.pending, (state) => {
         state.isLoading = true;

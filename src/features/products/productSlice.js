@@ -24,6 +24,17 @@ export const getAllproductsWithoutFilter = createAsyncThunk(
   }
 );
 
+export const getSearchResults = createAsyncThunk(
+  "product/search",
+  async (data,thunkAPI) => {
+    try {
+      return productService.searchProducts(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+)
+
 export const getDetails = createAsyncThunk(
   "product/getdetails",
   async (id,thunkAPI) => {
@@ -118,6 +129,21 @@ export const productSlice = createSlice({
         }
       })
       .addCase(addRating.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(getSearchResults.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getSearchResults.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.rating = true;
+        state.searchResults = action.payload;
+      })
+      .addCase(getSearchResults.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = true;
         state.isSuccess = false;

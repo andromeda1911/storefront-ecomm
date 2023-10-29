@@ -16,6 +16,13 @@ const getProductsNoFilter = async () => {
   }
 };
 
+const searchProducts = async (data) => {
+  const response = await axios.post(`${base_url}product/search`, {searchString: data.searchString});
+  if (response.data) {
+    return response.data;
+  }
+};
+
 const getProductDetails = async (id) => {
   const response = await axios.get(`${base_url}product/${id}`);
   if (response.data) {
@@ -34,5 +41,6 @@ export const productService = {
   getProducts,
   getProductDetails,
   rateProduct,
-  getProductsNoFilter
+  getProductsNoFilter,
+  searchProducts
 };
