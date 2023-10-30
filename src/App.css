@@ -486,6 +486,35 @@ footer .input-group-text {
   right: 15px;
 }
 
+.product-card .offers-tag {
+  top: 2%;
+  background: #e30613;
+  color: #fff;
+  padding: 2px 8px;
+  left: -4px;
+  font-size: 12px;
+}
+
+.product-card .offers-tag::before{
+  content: "";
+  border-right: 14px solid transparent;
+  border-left: 14px solid #e30613;
+  border-bottom: 14px solid transparent;
+  position: absolute;
+  right: -27px;
+  top: 0;
+}
+.product-card .offers-tag::after{
+  content: "";
+    border-right: 14px solid transparent;
+    border-left: 14px solid #e30613;
+    border-top: 14px solid transparent;
+    right: -27px;
+    position: absolute;
+    top: 8px;
+}
+
+
 /* special product card  */
 .special-product-card {
   background-color: white;
@@ -1083,5 +1112,8 @@ form .error {
   }
   .profile-container {
     left: 47%;
+  }
+  .auth-card{
+    width: 100%;
   }
 }

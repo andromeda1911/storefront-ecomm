@@ -38,6 +38,7 @@ const Header = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [showSideBar, setShowSideBar] = useState(false);
   const [searchString, setSearchString] = useState('');
+  
   const getTokenFromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))
     : null;
@@ -52,7 +53,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserCart(config2));
+    if(localStorage.getItem("customer") !== null) {
+      dispatch(getUserCart(config2));
+    }
     dispatch(getCategories());
     dispatch(getAllproductsWithoutFilter());
   }, []);

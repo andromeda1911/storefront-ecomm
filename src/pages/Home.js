@@ -89,6 +89,12 @@ const config2 = {
                         <img src={wish} alt="wishlist" />
                       </button>
                     </div>
+                    { item?.offermsg &&
+                      <div className="offers-tag position-absolute">
+                        {item?.offermsg}
+                    </div>
+                    }
+                    
                     <div className="product-image text-center">
                       <img
                         src={item?.images[0]?.url}
@@ -154,6 +160,11 @@ const config2 = {
                         <img src={wish} alt="wishlist" />
                       </button>
                     </div>
+                    { item?.offermsg &&
+                      <div className="offers-tag position-absolute">
+                        {item?.offermsg}
+                    </div>
+                    }
                     <div className="product-image text-center">
                       <img
                         src={item?.images[0]?.url}
@@ -242,6 +253,11 @@ const config2 = {
                         <img src={wish} alt="wishlist" />
                       </button>
                     </div>
+                    { item?.offermsg &&
+                      <div className="offers-tag position-absolute">
+                        {item?.offermsg}
+                    </div>
+                    }
                     <div className="product-image text-center">
                       <img
                         src={item?.images[0]?.url}
@@ -310,6 +326,11 @@ const config2 = {
                         <img src={wish} alt="wishlist" />
                       </button>
                     </div>
+                    { item?.offermsg &&
+                      <div className="offers-tag position-absolute">
+                        {item?.offermsg}
+                    </div>
+                    }
                     <div className="product-image text-center">
                       <img
                         src={item?.images[0]?.url}
@@ -376,6 +397,11 @@ const config2 = {
                         <img src={wish} alt="wishlist" />
                       </button>
                     </div>
+                    { item?.offermsg &&
+                      <div className="offers-tag position-absolute">
+                        {item?.offermsg}
+                    </div>
+                    }
                     <div className="product-image text-center">
                       <img
                         src={item?.images[0]?.url}
@@ -435,6 +461,11 @@ const config2 = {
                         <img src={wish} alt="wishlist" />
                       </button>
                     </div>
+                    { item?.offermsg &&
+                      <div className="offers-tag position-absolute">
+                        {item?.offermsg}
+                    </div>
+                    }
                     <div className="product-image text-center">
                       <img
                         src={item?.images[0]?.url}

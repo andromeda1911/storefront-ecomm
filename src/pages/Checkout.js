@@ -11,6 +11,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
 import { createCustomerOrder, emptyUserCart, getUserCart, resetState } from "../features/user/userSlice";
+import Loader from "../components/Loader";
 
 const shippingSchema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -29,6 +30,7 @@ const Checkout = () => {
   const authState = useSelector((state) => state.auth);
   const [totalAmount, setTotalAmount] = useState(null);
   const [shippingInfo, setShippingInfo] = useState(null);
+  const [loader, setLoader] = useState(false);
   // const [paymentInfo, setPaymentInfo] = useState({
   //   razorpayPaymentId: "",
   //   razorpayOrderId: "",
@@ -98,6 +100,8 @@ const Checkout = () => {
       script.onerror = () => {
         resolve(false);
       };
+      setLoader(false);
+
       document.body.appendChild(script);
     });
   };
@@ -117,10 +121,12 @@ const Checkout = () => {
   }, [cartState]);
 
   const checkoutHandler = async () => {
+    setLoader(true);
     const response = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
     if (!response) {
+      setLoader(false);
       alert("razorpay SDK failed to load");
       return;
     }
@@ -131,11 +137,12 @@ const Checkout = () => {
       config2
     );
     if (!result) {
+      setLoader(false);
       alert("Something went wrong");
       return;
     }
     const { amount, id: order_id, currency } = result.data.order;
-
+    setLoader(false);
     const options = {
       key: "rzp_test_aYxE5RcfDbj9qY", // Enter the Key ID generated from the Dashboard
       amount: amount,
@@ -200,6 +207,7 @@ const Checkout = () => {
   return (
     <>
       <Container class1="checkout-wrapper py-5 home-wrapper-2">
+     <Loader data={loader} />
         <div className="row">
           <div className="col-12 col-md-7">
             <div className="checkout-left-data">

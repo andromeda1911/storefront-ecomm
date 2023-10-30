@@ -7,7 +7,7 @@ import CustomInput from "../components/CustomInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../features/user/userSlice";
+import { loginUser,getUserCart } from "../features/user/userSlice";
 
 const loginSchema = yup.object({
   email: yup.string().email("Email address is required"),
@@ -15,6 +15,20 @@ const loginSchema = yup.object({
 });
 
 const Login = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
+
+  const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
+
+  
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -32,6 +46,9 @@ const Login = () => {
   useEffect(() => {
     if(authState.user !== null && authState.isError===false) {
       navigate('/');
+      if(localStorage.getItem("customer") !== null) {
+        dispatch(getUserCart(config2));
+      }
     }
   }, [authState])
 
