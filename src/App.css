@@ -1005,6 +1005,13 @@ form .error {
   color: red;
   margin-left: 10px;
 }
+.am
+.main-product-wrapper .size-border {
+  border-color: #d3dbe2;
+}
+.main-product-wrapper .selected-size {
+  border-color: #62a1ec !important;
+}
 
 /* Media queries */
 
@@ -1099,6 +1106,7 @@ form .error {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
   }
+
   .checkout-bottom-btn-container{
     flex-direction: column;
   }
@@ -1109,6 +1117,8 @@ form .error {
     position: fixed;
     bottom: 0;
     width: 100%;
+    margin-left: -11px;
+    z-index: 100;
   }
   .profile-container {
     left: 47%;

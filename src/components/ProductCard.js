@@ -84,7 +84,7 @@ const config2 = {
               </div>
               <div className="product-details">
                 <h6 className="brand">{item?.brand}</h6>
-                <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 70) + "..."}</h5>
+                <h5 className="product-title cursor-pointer" onClick={() => navigate("/product/"+item?._id)}>{item?.title?.substr(0, 35) + "..."}</h5>
                 <ReactStars
                   count={5}
                   size={24}

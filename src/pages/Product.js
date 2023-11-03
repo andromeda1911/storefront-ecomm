@@ -11,25 +11,30 @@ import { AiOutlineHeart } from "react-icons/ai";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { addRating, getAllproducts, getDetails } from "../features/products/productSlice";
+import {
+  addRating,
+  getAllproducts,
+  getDetails,
+} from "../features/products/productSlice";
 import { toast } from "react-toastify";
 import { addProdToCart, getUserCart } from "../features/user/userSlice";
 
 const Product = () => {
   const getTokenFromLocalStorage = localStorage.getItem("customer")
-  ? JSON.parse(localStorage.getItem("customer"))
-  : null;
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
 
-const config2 = {
-  headers: {
-    Authorization: `Bearer ${
-      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
-    }`,
-    Accept: "application/json",
-  },
-};
+  const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
 
   const [color, setColor] = useState(null);
+  const [size, setSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   const location = useLocation();
@@ -82,7 +87,7 @@ const config2 = {
       );
       setTimeout(() => {
         dispatch(getDetails(getProductId));
-      }, 300)
+      }, 300);
     }
     return false;
   };
@@ -92,15 +97,28 @@ const config2 = {
     //   toast.error("Please choose a color");
     //   return false;
     // } else {
+    console.log("product to be added", productState);
+    if (productState?.size.length !== 0 && size === null) {
+      toast.error("Please choose a size");
+      return false;
+    } 
+    else if(productState?.color.length !== 0 && color === null) {
+      toast.error("Please choose a color");
+      return false;
+    }
+    else {
       dispatch(
         addProdToCart({
           productId: productState?._id,
           quantity,
           color,
+          size,
           price: productState?.price,
-          config2: config2
+          config2: config2,
         })
       );
+    }
+
     // }
   };
 
@@ -121,6 +139,22 @@ const config2 = {
     textField.select();
     document.execCommand("copy");
     textField.remove();
+  };
+
+  const setSizeValue = (e, item) => {
+    const sizeBadges = document.getElementsByClassName("size-badge");
+    console.log("sizebadges", sizeBadges);
+    Array.from(sizeBadges).forEach((ele) => {
+      if (ele.classList.contains("selected-size")) {
+        ele.classList.remove("selected-size");
+      } else {
+        return;
+      }
+    });
+    setSize(item._id);
+    console.log("selectedSize", e);
+    e.target.classList.add("selected-size");
+    
   };
 
   const [orderedProduct, setorderedProduct] = useState(true);
@@ -188,34 +222,25 @@ const config2 = {
                   <h3 className="product-heading">Availability :</h3>{" "}
                   <p className="product-data">In Stock</p>
                 </div>
-                {
-                  productState?.size.length !== 0 && 
+                {alreadyAdded === false && productState?.size.length !== 0 && (
                   <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                  <h3 className="product-heading">Size :</h3>{" "}
-                  <div className="d-flex flex-wrap gap-15">
-                    {
-                      productState?.size.map((item, index) => {
-                        return(
-<span className="badge border border-1 bg-white text-dark border-secondary">
-                      {item.title}
-                        </span>
-                        )
-                      })
-                    }
-                    {/* <span className="badge border border-1 bg-white text-dark border-secondary">
-                      S
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      M
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      L
-                    </span> */}
+                    <h3 className="product-heading">Size :</h3>{" "}
+                    <div className="d-flex flex-wrap gap-15">
+                      {productState?.size.map((item, index) => {
+                        return (
+                          <span
+                            className="size-badge badge border border-1 bg-white text-dark size-border cursor-pointer"
+                            onClick={(e) => setSizeValue(e, item)}
+                          >
+                            {item.title}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-                }
-                
-                {alreadyAdded === false && (
+                )}
+
+                {alreadyAdded === false && productState?.color.length !== 0 && (
                   <>
                     <div className="d-flex gap-10 flex-column mt-2 mb-3">
                       <h3 className="product-heading">Color :</h3>{" "}
@@ -245,27 +270,26 @@ const config2 = {
                       </div>
                     </>
                   )}
-                  
                 </div>
                 <div
-                    className={
-                      alreadyAdded
-                        ? "d-flex gap-10 ms-0"
-                        : "ms5 " + "d-flex align-items-center gap-10"
-                    }
+                  className={
+                    alreadyAdded
+                      ? "d-flex gap-10 ms-0"
+                      : "ms5 " + "d-flex align-items-center gap-10"
+                  }
+                >
+                  <button
+                    className="button border-0"
+                    onClick={() => {
+                      alreadyAdded ? navigate("/cart") : uploadCart();
+                    }}
                   >
-                    <button
-                      className="button border-0"
-                      onClick={() => {
-                        alreadyAdded ? navigate("/cart") : uploadCart();
-                      }}
-                    >
-                      {alreadyAdded ? "Go to Cart" : "Add to Cart"}
-                    </button>
-                    <Link to="/signup" className="button signup">
-                      Buy Now
-                    </Link>
-                  </div>
+                    {alreadyAdded ? "Go to Cart" : "Add to Cart"}
+                  </button>
+                  <Link to="/signup" className="button signup">
+                    Buy Now
+                  </Link>
+                </div>
                 <div className="d-flex align-items-center gap-15 mt-2">
                   {/* <div>
                     <a href="">
@@ -335,7 +359,6 @@ const config2 = {
                     <p className="mb-0">Based on 2 reviews</p>
                   </div>
                 </div>
-
               </div>
               <div className="review-form py-4">
                 <h4 className="mb-2">Write a Review</h4>
@@ -386,7 +409,7 @@ const config2 = {
                         </div>
                         <p className="mt-3"> {item?.comment}</p>
                       </div>
-                    )
+                    );
                   })}
               </div>
             </div>

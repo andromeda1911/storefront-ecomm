@@ -167,7 +167,8 @@ const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: ""
+  message: "",
+  orderedProduct: null
 };
 
 export const authSlice = createSlice({

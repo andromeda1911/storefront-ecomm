@@ -65,6 +65,7 @@ const Checkout = () => {
       authState?.orderedProduct?.success === true
     ) {
       navigate("/my-orders");
+      dispatch(resetState());
     }
   }, [authState]);
 
@@ -114,6 +115,7 @@ const Checkout = () => {
         product: cartState[index].productId?._id,
         quantity: cartState[index]?.quantity,
         color: cartState[index]?.productId?.color[0],
+        size: cartState[index]?.productId?.size[0],
         price: cartState[index]?.price,
       });
     }

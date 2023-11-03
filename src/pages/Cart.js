@@ -97,8 +97,11 @@ const Cart = () => {
                       </div>
                       <div className="w-80">
                         <p>{item?.productId?.title}</p>
-                        <p>Size: 23</p>
-                        <p className="d-flex gap-3">
+                        {item?.size && 
+                          <p>Size: {item?.size?.title}</p>
+                        }
+                        {item?.color && 
+                          <p className="d-flex gap-3">
                           Color:{" "}
                           <ul className="colors ps-0">
                             <li
@@ -106,6 +109,8 @@ const Cart = () => {
                             ></li>
                           </ul>
                         </p>
+                        }
+                        
                       </div>
                     </div>
                     {/* <div className="cart-col-2">
