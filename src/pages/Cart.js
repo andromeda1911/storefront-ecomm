@@ -90,7 +90,7 @@ const Cart = () => {
                     <div className="cart-col-1 gap-15 d-flex align-items-center">
                       <div className="w-20">
                         <img
-                          src={item.productId.images[0].url}
+                          src={item.productId?.images[0]?.url}
                           className="img-fluid"
                           alt="product image"
                         />

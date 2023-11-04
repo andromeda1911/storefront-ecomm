@@ -134,7 +134,7 @@ const Checkout = () => {
     }
     const result = await axios.post(
       // "http://localhost:5000/api/user/order/checkout",
-      "https://storefront-app-402010.el.r.appspot.com/api/user/order/checkout",
+      "http://ec2-35-154-255-31.ap-south-1.compute.amazonaws.com/api/user/order/checkout",
       { amount: totalAmount + 29 },
       config2
     );
@@ -163,7 +163,7 @@ const Checkout = () => {
 
         const result = await axios.post(
           // "http://localhost:5000/api/user/order/paymentVerification",
-          "https://storefront-app-402010.el.r.appspot.com/api/user/order/paymentVerification",
+          "http://ec2-35-154-255-31.ap-south-1.compute.amazonaws.com/api/user/order/paymentVerification",
           data,
           config2
         );
